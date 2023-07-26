@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class System extends Model
+class RequestType extends Model
 {
     use HasFactory;
 
-    // System has many Requests (One-to-Many)
-    public function requests() {
-        return $this->hasMany(Request::class);
+    // RequestType belongs to User (Many-to-One)
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }
+
