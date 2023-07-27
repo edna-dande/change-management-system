@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,27 +15,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('admin.index');
+    return view('welcome');
 });
 
-Route::middleware('admin')->group(function () {
-Route::get('/admin/users', [AdminController::class,'showUsers'])->name('admin.users');
-Route::get('/admin/users/{user}', [AdminController::class, 'editUser'])->name('admin.users.edit');
-Route::post('/admin/users', [AdminController::class,'storeUser'])->name('admin.users.store');
-Route::put('/admin/users/{user}', [AdminController::class, 'updateUser'])->name('admin.users.update');
-Route::delete('/admin/users/{user}', [AdminController::class,'destroyUser'])->name('admin.users.destroy');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Systems CRUD
-Route::get('/admin/systems', [AdminController::class,'showSystems'])->name('admin.systems');
-Route::get('/admin/systems/{system}', [AdminController::class,'editSystem'])->name('admin.systems.edit');
-Route::post('/admin/systems', [AdminController::class,'storeSystem'])->name('admin.systems.store');
-Route::put('/admin/systems/{system}', [AdminController::class,'updateSystem'])->name('admin.systems.update');
-Route::delete('/admin/systems/{system}', [AdminController::class,'destroySystem'])->name('admin.systems.destroy');
-
-// Roles CRUD
-Route::get('/admin/roles', [AdminController::class,'showRoles'])->name('admin.roles');
-Route::get('/admin/roles/{role}', [AdminController::class,'editRole'])->name('admin.roles.edit');
-Route::post('/admin/roles', [AdminController::class,'storeRole'])->name('admin.roles.store');
-Route::put('/admin/roles/{role}', [AdminController::class,'updateRole'])->name('admin.roles.update');
-Route::delete('/admin/roles/{role}', [AdminController::class,'destroyRole'])->name('admin.roles.destroy');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+require __DIR__.'/auth.php';
