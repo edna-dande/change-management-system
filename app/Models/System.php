@@ -9,6 +9,8 @@ class System extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'description'];
+
     // System has many Requests (One-to-Many)
     public function requests() {
         return $this->hasMany(Request::class);

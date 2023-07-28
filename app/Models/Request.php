@@ -9,6 +9,18 @@ class Request extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'system_id',
+        'status_id',
+        'objective',
+        'current_process',
+        'proposed_process',
+        'user_id',
+        'priority_id',
+        'created_at',
+        ];
+
     public function user() {
         return $this->belongsTo(User::class);
     }

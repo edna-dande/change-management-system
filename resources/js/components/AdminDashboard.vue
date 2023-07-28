@@ -1,33 +1,47 @@
 <template>
-    <div class="users">
-        <h1 style="font-size: 25px;">List of Users</h1>
-        <p>Manage your users with ease</p>
+    <div>
+        <div class="dashboard">
+            <h1>List of Users</h1>
+            <p>Manage your users with ease</p>
+            <a class="btn btn-primary" :href="`/users`">
+          <span>
+            <font-awesome-icon :icon="['fas', 'plus']" style="color: #ffffff;" />
+          </span>
+                <span class="create-text"> Create</span>
+            </a>
 
-        <a class="btn btn-primary" :href="createUserLink()"><font-awesome-icon icon="fa-solid fa-plus" style="color: #fbfdfe;" />Create</a>
-
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="user in users" :key="user.id">
-                <td>{{ user.name }}</td>
-                <td>{{ user.location }}</td>
-                <td>
-                    <a style="margin-right: 10px;" class="btn btn-sm btn-info-outline" :href="viewUserLink(user.id)"><font-awesome-icon icon="fa-regular fa-eye" /></a>
-                    <a style="margin-right: 10px;" class="btn btn-sm btn-primary-outline" :href="editUserLink(user.id)"><font-awesome-icon :icon="['far', 'pen-to-square']" style="color: #3671d9;" /></a>
-                    <form @submit.prevent="confirmDelete(user.id)" style="display: inline-block;">
-                        <button class="btn btn-sm btn-danger-outline" type="submit" style="margin-right: 5px;"><font-awesome-icon icon="fa-solid fa-trash" style="color: #c4290e;" /></button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-if="users.length === 0">
+                    <td colspan="3">No users</td>
+                </tr>
+                <tr v-else v-for="user in users" :key="user.id">
+                    <td>{{ user.name }}</td>
+                    <td>
+                        <span v-for="role in user.roles" :key="role.id" class="badge text-bg-dark">{{ role.name }}</span>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn" :href="`/users/show/${user.id}`">
+                            <font-awesome-icon :icon="['fas', 'eye']" />
+                        </a>
+                        <a class="btn" :href="`/users/${user.id}`">
+                            <font-awesome-icon :icon="['fas', 'pen-to-square']" />
+                        </a>
+                        <form @submit.prevent="confirmDelete(user.id)" style="display: inline-block;">
+                            <button class="btn" type="submit"><font-awesome-icon :icon="['fas', 'trash']" /></button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -40,31 +54,26 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+        };
+    },
     methods: {
-        createUserLink() {
-            return `/projects/create`;
-        },
-        viewUserLink(userId) {
-            return `/projects/${userId}`;
-        },
-        editUserLink(userId) {
-            return `/projects/${userId}/edit`;
-        },
         confirmDelete(userId) {
             if (confirm('Are you sure?')) {
-                this.deleteProject(userId);
+                this.deleteUser(userId);
             }
         },
-        async deleteProject(projectId) {
+        async deleteUser(userId) {
             try {
-                await axios.post(`/projects/${projectId}`,{_method: 'delete'});
+                await axios.post(`/users/${userId}`,{_method: 'delete'});
 
 
-                alert('Project successfully deleted!');
-                window.location.assign('/projects');
+                alert('User successfully deleted!');
+                window.location.assign('/dashboard');
             } catch (error) {
                 console.error('Error deleting project:', error);
-                alert('An error occurred while deleting the project.');
+                alert('An error occurred while deleting the user.');
             }
         },
     },
@@ -72,7 +81,4 @@ export default {
 </script>
 
 <style>
-.users {
-    margin: 20px;
-}
 </style>

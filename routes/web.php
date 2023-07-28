@@ -19,9 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('admin.dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -30,11 +28,13 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-//    Route::get('/admin/users', [AdminController::class,'showUsers'])->name('admin.users');
-//    Route::get('/admin/users/{user}', [AdminController::class, 'editUser'])->name('admin.users.edit');
-//    Route::post('/admin/users', [AdminController::class,'storeUser'])->name('admin.users.store');
-//    Route::put('/admin/users/{user}', [AdminController::class, 'updateUser'])->name('admin.users.update');
-//    Route::delete('/admin/users/{user}', [AdminController::class,'destroyUser'])->name('admin.users.destroy');
+    Route::get('/admin/users', [AdminController::class,'showUser'])->name('admin.users');
+    Route::get('/users/show/{id}', [AdminController::class, 'showUser'])->name('admin.users.show');
+    Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
+    Route::get('/users', [AdminController::class,'createUser'])->name('admin.users.create');
+    Route::post('/users', [AdminController::class,'storeUser'])->name('admin.users.store');
+    Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/users/{user}', [AdminController::class,'destroyUser'])->name('admin.users.destroy');
 
 // Systems CRUD
     Route::get('/systems', [AdminController::class,'showSystems'])->name('systems');

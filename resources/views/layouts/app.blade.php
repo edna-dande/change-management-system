@@ -36,10 +36,10 @@
                         <div class="sidebar-brand">
                             <ul>
                                 {{--                                @role('Admin')--}}
-                                @if(request()->routeIs('dashboard'))
-                                    <li class="active"><a href="{{ route('dashboard') }}"><img src="images/users_green.png" alt="users">Users</a></li>
+                                @if(request()->routeIs('admin*'))
+                                    <li class="active"><a href="{{ route('admin.dashboard') }}"><img src="images/users_green.png" alt="users">Users</a></li>
                                 @else
-                                    <li><a href="{{ route('dashboard') }}"><img src="images/users_white.png" alt="users">Users</a></li>
+                                    <li><a href="{{ route('admin.dashboard') }}"><img src="images/users_white.png" alt="users">Users</a></li>
                                 @endif
                                 @if(request()->routeIs('systems*'))
                                     <li class="active"><a href="{{ route('systems') }}"><img src="images/system_green.png" alt="system">Systems</a></li>
@@ -51,6 +51,9 @@
                                 @else
                                     <li><a href="{{ route('roles') }}"><img src="images/role_white.png" alt="role">Roles</a></li>
                                 @endif
+                                {{--                                @endrole--}}
+                                {{--                                @role('User')--}}
+
                                 {{--                                @endrole--}}
                             </ul>
                         </div>

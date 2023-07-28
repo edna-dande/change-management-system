@@ -9,6 +9,8 @@ class RequestType extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'request_id'];
+
     // RequestType belongs to User (Many-to-One)
     public function user() {
         return $this->belongsTo(User::class);

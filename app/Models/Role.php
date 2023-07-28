@@ -9,6 +9,8 @@ class Role extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
     // Role belongs to many Users (Many-to-Many)
     public function users()
     {

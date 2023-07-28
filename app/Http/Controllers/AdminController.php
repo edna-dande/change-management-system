@@ -11,15 +11,21 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-//    public function dashboard ()
-//    {
-////        $users = User::orderBy('id','DESC')->get();
-//        return view('admin_dashboard');
-//    }
-    public function showUsers()
+    public function dashboard ()
     {
-        $users = User::orderBy('id','DESC')->get();
-        return view('admin.users.index', compact('users'));
+        $users = User::with('roles')->orderBy('id','DESC')->get();
+        return view('admin_dashboard', compact('users'));
+    }
+    public function showUser(User $user)
+    {
+//        $user = User::all();
+        return view('admin.users.show', compact('user'));
+    }
+
+    public function createUser()
+    {
+        $roles = Role::all();
+        return view('admin.users.create', compact('roles'));
     }
 
     public function editUser(User $user)

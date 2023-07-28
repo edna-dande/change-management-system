@@ -9,8 +9,27 @@ class Approval extends Model
 {
     use HasFactory;
 
-    // Approval has many Approvers (One-to-Many)
-    public function approvers() {
-        return $this->hasMany(Approver::class);
+    protected $fillable = [
+        'user_id',
+        'request_id',
+        'reason',
+        'approval_request_id'
+        ];
+
+
+    public function request() {
+        return $this->belongsTo(Request::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function approval() {
+        return $this->belongsTo(Approval::class);
+    }
+
+    public function status() {
+        return $this->belongsTo(Status::class);
     }
 }
