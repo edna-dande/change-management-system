@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div>
-                    <img src="images/logo.png" alt="logo" width="140" height="30"style="margin-top: 15px;">
+                    <img src="/images/logo.png" alt="logo" width="140" height="30"style="margin-top: 15px;">
                 </div>
 {{--                <div class="shrink-0 flex items-center">--}}
 {{--                    <a href="{{ route('dashboard') }}">--}}

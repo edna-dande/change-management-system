@@ -6,7 +6,7 @@
                 <span>
                     <font-awesome-icon icon="fa-solid fa-plus" style="color: #ffffff;"/>
                 </span>
-            <span class="create-text"> Create</span>
+            <span class="create-text"> Create jhfghjv</span>
         </a>
 
         <table class="table">
@@ -30,9 +30,9 @@
                         <a class="btn" href="{{ url("/users/show/{$user->id}") }}">
                             <font-awesome-icon icon="fa-solid fa-eye" />
                         </a>
-                        <a class="btn" href="{{ url("/users/{$user->id}") }}">
-                            <font-awesome-icon icon="fa-solid fa-pen-to-square" />
-                        </a>
+{{--                        <a class="btn" href="{{ route('admin.users.edit', ['user' => $user->id]) }}">--}}
+{{--                            <font-awesome-icon icon="fa-solid fa-pen-to-square" />--}}
+{{--                        </a>--}}
                         <form action="{{ url("/users/{$user->id}") }}" style="display: inline-block;" method="POST">
                             @csrf
                             @method('DELETE')

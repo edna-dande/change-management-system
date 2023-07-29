@@ -37,19 +37,19 @@
                             <ul>
                                 {{--                                @role('Admin')--}}
                                 @if(request()->routeIs('admin*'))
-                                    <li class="active"><a href="{{ route('admin.dashboard') }}"><img src="images/users_green.png" alt="users">Users</a></li>
+                                    <li class="active"><a href="{{ route('admin.dashboard') }}"><img src="/images/users_green.png" alt="users">Users</a></li>
                                 @else
-                                    <li><a href="{{ route('admin.dashboard') }}"><img src="images/users_white.png" alt="users">Users</a></li>
+                                    <li><a href="{{ route('admin.dashboard') }}"><img src="/images/users_white.png" alt="users">Users</a></li>
                                 @endif
                                 @if(request()->routeIs('systems*'))
-                                    <li class="active"><a href="{{ route('systems') }}"><img src="images/system_green.png" alt="system">Systems</a></li>
+                                    <li class="active"><a href="{{ route('systems') }}"><img src="/images/system_green.png" alt="system">Systems</a></li>
                                 @else
-                                    <li><a href="{{ route('systems') }}"><img src="images/system_white.png" alt="system">Systems</a></li>
+                                    <li><a href="{{ route('systems') }}"><img src="/images/system_white.png" alt="system">Systems</a></li>
                                 @endif
                                 @if(request()->routeIs('roles*'))
-                                    <li class="active"><a href="{{ route('roles') }}"><img src="images/role_green.png" alt="role">Roles</a></li>
+                                    <li class="active"><a href="{{ route('roles') }}"><img src="/images/role_green.png" alt="role">Roles</a></li>
                                 @else
-                                    <li><a href="{{ route('roles') }}"><img src="images/role_white.png" alt="role">Roles</a></li>
+                                    <li><a href="{{ route('roles') }}"><img src="/images/role_white.png" alt="role">Roles</a></li>
                                 @endif
                                 {{--                                @endrole--}}
                                 {{--                                @role('User')--}}

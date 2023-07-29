@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="dashboard">
-        <h1>List of Systems</h1>
-        <p>Manage your systems with ease</p>
-        <a class="btn btn-primary" href="{{ url("/systems/create") }}">
+        <h1>List of Roles</h1>
+        <p>Manage your roles with ease</p>
+        <a class="btn btn-primary" href="{{ url("/roles/create") }}">
                 <span>
                     <font-awesome-icon icon="fa-solid fa-plus" style="color: #ffffff;"/>
                 </span>
@@ -13,24 +13,22 @@
             <thead>
             <tr>
                 <th >Name</th>
-                <th>Description</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
-            @forelse($systems as $system)
+            @forelse($roles as $role)
                 <tr>
-                    <td>{{ $system->name }}</td>
-                    <td>{{ $system->description }}</td>
+                    <td>{{ $role->name }}</td>
 
                     <td class="text-center">
-                        <a class="btn" href="{{ url("/systems/show/{$system->id}") }}">
+                        <a class="btn" href="{{ url("/roles/show/{$role->id}") }}">
                             <font-awesome-icon icon="fa-solid fa-eye" />
                         </a>
-                                                <a class="btn" href="{{ route('systems.edit', ['system' => $system->id]) }}">
+                                                <a class="btn" href="{{ route('roles.edit', ['role' => $role->id]) }}">
                                                     <font-awesome-icon icon="fa-solid fa-pen-to-square" />
                                                 </a>
-                        <form action="{{ url("/systems/{$system->id}") }}" style="display: inline-block;" method="POST">
+                        <form action="{{ url("/roles/{$role->id}") }}" style="display: inline-block;" method="POST">
                             @csrf
                             @method('DELETE')
                             <button class="btn" type="submit" onclick="return confirm('Are you sure?')">
@@ -40,7 +38,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="3">No systems</td></tr>
+                <tr><td colspan="2">No Roles</td></tr>
             @endforelse
 
 
