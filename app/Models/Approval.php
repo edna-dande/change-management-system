@@ -18,7 +18,7 @@ class Approval extends Model
 
 
     public function request() {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(ChangeRequest::class);
     }
 
     public function user() {

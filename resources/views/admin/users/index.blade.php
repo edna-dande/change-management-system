@@ -6,7 +6,7 @@
                 <span>
                     <font-awesome-icon icon="fa-solid fa-plus" style="color: #ffffff;"/>
                 </span>
-            <span class="create-text"> Create jhfghjv</span>
+            <span class="create-text"> Create </span>
         </a>
 
         <table class="table">

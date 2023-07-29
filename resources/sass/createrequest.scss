@@ -1,5 +1,12 @@
-.dashboard {
-    padding: 40px 40px 0px 40px;
+.crequest{
+    padding: 40px 80px 0px 40px;
+    h1 {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    p {
+        color: darkslategray;
+    }
     .btn-primary {
         background-color: #026B5B;
         border: solid 1px #026B5B;
@@ -11,16 +18,8 @@
             display: inline-block !important;
         }
     }
-    h1 {
-        font-size: 24px;
-        font-weight: bold
-    }
-    p {
-        color: darkslategray;
-    }
     .table {
         border-radius: 20px;
-        //border-collapse: separate;
         thead {
             border-radius: 20px;
             tr {
@@ -70,3 +69,7 @@
 
     }
 }
+.form-group {
+    padding-bottom: 10px;
+}
+

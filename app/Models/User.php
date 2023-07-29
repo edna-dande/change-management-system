@@ -59,7 +59,7 @@ class User extends Authenticatable
     // User has many Requests (One-to-Many)
     public function requests()
     {
-        return $this->hasMany(Request::class);
+        return $this->hasMany(ChangeRequest::class);
     }
 
     // User has many Comments (One-to-Many)

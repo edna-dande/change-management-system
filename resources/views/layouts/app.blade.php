@@ -35,7 +35,7 @@
                     <div class="sidebar-header">
                         <div class="sidebar-brand">
                             <ul>
-                                {{--                                @role('Admin')--}}
+{{--                                                                @role('Admin')--}}
                                 @if(request()->routeIs('admin*'))
                                     <li class="active"><a href="{{ route('admin.dashboard') }}"><img src="/images/users_green.png" alt="users">Users</a></li>
                                 @else
@@ -51,10 +51,20 @@
                                 @else
                                     <li><a href="{{ route('roles') }}"><img src="/images/role_white.png" alt="role">Roles</a></li>
                                 @endif
-                                {{--                                @endrole--}}
-                                {{--                                @role('User')--}}
-
-                                {{--                                @endrole--}}
+{{--                                                                @endrole--}}
+{{--                                                                @role('User')--}}
+{{--                                @if(request()->routeIs('change_requests*'))--}}
+{{--                                    <li class="active"><a href="{{ route('change_requests.create') }}"><font-awesome-icon icon="fa-solid fa-plus" style="color: #026b5b;"/>Create</a></li>--}}
+{{--                                @else--}}
+{{--                                    <li><a href="{{ route('change_requests.create') }}"><span><font-awesome-icon icon="fa-solid fa-plus" style="color: #ffffff;"/></span>--}}
+{{--                                            <span class="create-text"> Create </span></a></li>--}}
+{{--                                @endif--}}
+                                @if(request()->routeIs('change_requests*'))
+                                    <li class="active"><a href="{{ route('change_requests') }}"><img src="/images/request_white.png" alt="request">Requests</a></li>
+                                @else
+                                    <li><a href="{{ route('change_requests') }}"><img src="/images/request_white.png" alt="request">Requests</a></li>
+                                @endif
+{{--                                                                @endrole--}}
                             </ul>
                         </div>
                     </div>

@@ -37,8 +37,8 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                        <x-dropdown-link :href="route('profile.edit')" class="logout">
+                            <img src="/images/profile.png" alt="logo" class="logout"><span>{{ __('Profile') }}</span>
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -48,7 +48,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();" class="logout">
-                                <img src="images/logout.png" alt="logo" class="logout"><span>{{ __('Log Out') }}</span>
+                                <img src="/images/logout.png" alt="logo" class="logout"><span>{{ __('Log Out') }}</span>
                             </x-dropdown-link>
                         </form>
                     </x-slot>

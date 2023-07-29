@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\ChangeRequestController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\SystemController;
 use App\Http\Controllers\Admin\RoleController;
@@ -55,14 +57,26 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/roles/{role}', [RoleController::class,'destroyRole'])->name('roles.destroy');
 });
 
-Route::middleware(['auth', 'user'])->group(function () {
-    Route::get('/requests', [UserController::class, 'index'])->name('user.dashboard');
-    Route::get('/requests/create', [UserController::class, 'createRequest'])->name('user.request.create');
-    Route::post('/requests', [UserController::class, 'storeRequest'])->name('user.request.store');    
-    Route::get('/requests/show/{request}', [UserController::class, 'showRequest'])->name('user.request.show');
-    Route::put('/requests/{request}/update', [UserController::class, 'updateRequest'])->name('user.request.update');
-    Route::get('/requests/{request}/edit', [UserController::class, 'editRequest'])->name('user.request.edit');
-});
+//Route::middleware(['auth', 'user'])->group(function () {
+//    Route::get('/requests', [UserController::class, 'index'])->name('user.dashboard');
+//    Route::get('/requests/create', [UserController::class, 'createRequest'])->name('user.request.create');
+//    Route::post('/requests', [UserController::class, 'storeRequest'])->name('user.request.store');
+//    Route::get('/requests/show/{request}', [UserController::class, 'showRequest'])->name('user.request.show');
+//    Route::put('/requests/{request}/update', [UserController::class, 'updateRequest'])->name('user.request.update');
+//    Route::get('/requests/{request}/edit', [UserController::class, 'editRequest'])->name('user.request.edit');
+//});
+
+Route::get('/change_requests', [ChangeRequestController::class,'index'])->name('change_requests');
+Route::get('/change_requests/create', [ChangeRequestController::class,'create'])->name('change_requests.create');
+Route::post('/change_requests', [ChangeRequestController::class,'store'])->name('change_requests.store');
+Route::post('/change_requests/show/{change_request}', [ChangeRequestController::class,'show'])->name('change_requests.show');
+Route::get('/change_requests/{id}/edit', [ChangeRequestController::class,'edit'])->name('change_requests.edit');
+Route::put('/change_requests/{id}', [ChangeRequestController::class,'update'])->name('change_requests.update');
+Route::delete('/change_requests/{id}', [ChangeRequestController::class,'destroy'])->name('change_requests.destroy');
+
+
+Route::post('/change_requests/{change_request}/comments', [CommentController::class, 'store'])->name('comments.store');
+
 
 
 require __DIR__.'/auth.php';

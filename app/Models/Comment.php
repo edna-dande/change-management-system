@@ -15,9 +15,9 @@ class Comment extends Model
         'request_id'
         ];
 
-    // Comment belongs to Request (Many-to-One)
+    // Comment belongs to ChangeRequest (Many-to-One)
     public function request() {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(ChangeRequest::class);
     }
 
     // Comment belongs to User (Many-to-One)
