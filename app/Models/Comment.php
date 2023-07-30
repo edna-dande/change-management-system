@@ -12,11 +12,11 @@ class Comment extends Model
     protected $fillable = [
         'user_id',
         'content',
-        'request_id'
+        'change_request_id'
         ];
 
     // Comment belongs to ChangeRequest (Many-to-One)
-    public function request() {
+    public function changeRequest() {
         return $this->belongsTo(ChangeRequest::class);
     }
 

@@ -28,13 +28,13 @@
                             <font-awesome-icon icon="fa-solid fa-eye" />
                         </a>
                                                 <a class="btn" href="{{ route('systems.edit', ['system' => $system->id]) }}">
-                                                    <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                                                    <font-awesome-icon :icon="['far', 'pen-to-square']" style="color: #3671d9;" />
                                                 </a>
                         <form action="{{ url("/systems/{$system->id}") }}" style="display: inline-block;" method="POST">
                             @csrf
                             @method('DELETE')
                             <button class="btn" type="submit" onclick="return confirm('Are you sure?')">
-                                <font-awesome-icon icon="fa-solid fa-trash" />
+                                <font-awesome-icon icon="fa-solid fa-trash" style="color: #c4290e;" />
                             </button>
                         </form>
                     </td>

@@ -32,10 +32,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/users', [AdminController::class,'createUser'])->name('admin.users.create');
     Route::get('/admin/users', [AdminController::class,'dashboard'])->name('admin.users');
     Route::get('/users/show/{user}', [AdminController::class, 'showUser'])->name('admin.users.show');
     Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
-    Route::get('/users', [AdminController::class,'createUser'])->name('admin.users.create');
     Route::post('/users', [AdminController::class,'storeUser'])->name('admin.users.store');
     Route::post('/users/{user}', [AdminController::class, 'updateUser'])->name('admin.users.update');
     Route::delete('/users/{user}', [AdminController::class,'destroyUser'])->name('admin.users.destroy');
@@ -69,13 +69,25 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/change_requests', [ChangeRequestController::class,'index'])->name('change_requests');
 Route::get('/change_requests/create', [ChangeRequestController::class,'create'])->name('change_requests.create');
 Route::post('/change_requests', [ChangeRequestController::class,'store'])->name('change_requests.store');
-Route::post('/change_requests/show/{change_request}', [ChangeRequestController::class,'show'])->name('change_requests.show');
+Route::get('/change_requests/show/{id}', [ChangeRequestController::class,'show'])->name('change_requests.show');
 Route::get('/change_requests/{id}/edit', [ChangeRequestController::class,'edit'])->name('change_requests.edit');
 Route::put('/change_requests/{id}', [ChangeRequestController::class,'update'])->name('change_requests.update');
 Route::delete('/change_requests/{id}', [ChangeRequestController::class,'destroy'])->name('change_requests.destroy');
 
+Route::post('/approver/approvals/{id}/approve', [ChangeRequestController::class, 'approve'])->name('change_requests.approve');
+Route::post('/approver/approvals/{id}/reject', [ChangeRequestController::class, 'reject'])->name('change_requests.reject');
+Route::post('/change_requests/{id}/comments', [ChangeRequestController::class, 'storeComment'])->name('change_requests.comments');
+Route::get('/approver/dashboard', [ChangeRequestController::class, 'approverDashboard'])->name('approver.dashboard');
+Route::get('/approver/approvals/{id}', [ChangeRequestController::class, 'viewApproverApproval'])->name('approver.approvals.view');
+Route::post('/change_requests/{id}/approve/business_analyst', [ChangeRequestController::class, 'approveBusinessAnalyst'])->name('change_requests.approve.business_analyst');
+Route::post('/change_requests/{id}/approve/design', [ChangeRequestController::class, 'approveDesign'])->name('change_requests.approve.design');
+Route::post('/change_requests/{id}/approve/tech_lead', [ChangeRequestController::class, 'approveTechLead'])->name('change_requests.approve.tech_lead');
+Route::post('/change_requests/{id}/reject/business_analyst', [ChangeRequestController::class, 'rejectBusinessAnalyst'])->name('change_requests.reject.business_analyst');
+Route::post('/change_requests/{id}/reject/design', [ChangeRequestController::class, 'rejectDesign'])->name('change_requests.reject.approve.design');
+Route::post('/change_requests/{id}/reject/tech_lead', [ChangeRequestController::class, 'rejectTechLead'])->name('change_requests.reject.tech_lead');
 
-Route::post('/change_requests/{change_request}/comments', [CommentController::class, 'store'])->name('comments.store');
+
+// Route::post('/change_requests/{change_request}/comments', [CommentController::class, 'store'])->name('comments.store');
 
 
 

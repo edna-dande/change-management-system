@@ -12,7 +12,7 @@ class System extends Model
     protected $fillable = ['name', 'description'];
 
     // System has many Requests (One-to-Many)
-    public function requests() {
-        return $this->hasMany(ChangeRequest::class);
+    public function changeRequest() {
+        return $this->hasOne(ChangeRequest::class);
     }
 }

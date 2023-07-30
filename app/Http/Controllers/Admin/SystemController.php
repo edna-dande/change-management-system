@@ -13,9 +13,9 @@ class SystemController extends Controller
         $systems = System::orderBy('id','DESC')->get();
         return view('admin.systems.index', compact('systems'));
     }
-    public function showSystem()
+    public function showSystem(System $system)
     {
-        $system = System::orderBy('id','DESC')->get();
+//        $system = System::orderBy('id','DESC')->get();
         return view('admin.systems.show', compact('system'));
 
     }

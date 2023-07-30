@@ -11,13 +11,14 @@ class Approval extends Model
 
     protected $fillable = [
         'user_id',
-        'request_id',
+        'change_request_id',
         'reason',
-        'approval_request_id'
+        'approval_level_id',
+        'status'
         ];
 
 
-    public function request() {
+    public function changeRequest() {
         return $this->belongsTo(ChangeRequest::class);
     }
 
@@ -25,11 +26,13 @@ class Approval extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function approval() {
-        return $this->belongsTo(Approval::class);
+    public function approvalLevel() {
+        return $this->belongsTo(ApprovalLevel::class, 'approval_level_id');
     }
 
     public function status() {
         return $this->belongsTo(Status::class);
     }
+
+
 }

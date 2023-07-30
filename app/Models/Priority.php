@@ -11,4 +11,9 @@ class Priority extends Model
 
     protected $fillable = ['name'];
 
+    public function changeRequest()
+    {
+        return $this->hasOne(ChangeRequest::class);
+    }
+
 }

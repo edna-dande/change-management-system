@@ -1,8 +1,8 @@
 <x-app-layout>
 
 {{--        @if(Auth::user()->permissions()->contains('edit_user'))--}}
-            <div class="container">
-                <h2>Edit User</h2>
+            <div class="container dashboard">
+                <h1>Edit User</h1>
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>

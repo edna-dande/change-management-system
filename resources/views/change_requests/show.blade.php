@@ -32,6 +32,7 @@
             <!-- Comments Section -->
             <div class="card mb-3">
                 <div class="card-header">
+                    @if(auth()->user()->id === $changeRequest->user_id || auth()->user()->role === 'business analyst' || auth()->user()->role === 'design' || auth()->user()->role === 'tech lead')
                     <h5>Comments</h5>
                 </div>
                 <div class="card-body">
@@ -53,6 +54,7 @@
                         <p>No comments yet.</p>
                     @endif
                 </div>
+                @endif
             </div>
 
             <div class="card mb-3">

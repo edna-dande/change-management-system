@@ -1,10 +1,16 @@
 <x-app-layout>
     {{--    @if(Auth::user()->permissions()->contains('view_user'))--}}
-    <div class="container">
-        <h2>User Details</h2>
+    <div class="container dashboard">
+        <h1>User Details</h1>
         <p>Name: {{ $user->name }}</p>
         <p>Email: {{ $user->email }}</p>
-        <p>Role: {{ $user->role ? $user->role->name  :'' }}</p>
+        <p>Role:  @foreach($user->roles as $role)
+                <span>
+{{--                    class="badge text-bg-dark">--}}
+                    {{ $role->name }}</span>
+            @endforeach
+            <p>
+{{--            {{ $user->role ? $user->role->name :'' }}</p>--}}
         {{--            @endif--}}
 
         {{--            @if(Auth::user()->permissions()->contains('edit_user'))--}}

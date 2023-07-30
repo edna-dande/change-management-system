@@ -14,9 +14,9 @@ class RoleController extends Controller
         $roles = Role::orderBy('id','DESC')->get();
         return view('admin.roles.index', compact('roles'));
     }
-    public function showRole()
+    public function showRole(Role $role)
     {
-        $role = Role::orderBy('id','DESC')->get();
+//        $role = Role::orderBy('id','DESC')->get();
         return view('admin.roles.show', compact('role'));
     }
     public function createRole()

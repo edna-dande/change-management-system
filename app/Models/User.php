@@ -49,15 +49,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_users');
     }
 
-
-
     public function hasRole($roleName)
     {
         return $this->roles()->where('name', $roleName)->exists();
     }
 
     // User has many Requests (One-to-Many)
-    public function requests()
+    public function changeRequests()
     {
         return $this->hasMany(ChangeRequest::class);
     }
@@ -78,5 +76,10 @@ class User extends Authenticatable
     public function requestTypes()
     {
         return $this->hasMany(RequestType::class);
+    }
+
+    public function approvalLevels()
+    {
+        return $this->belongsToMany(ApprovalLevel::class, 'approval_levels_users');
     }
 }

@@ -37,7 +37,7 @@
                             @csrf
                             @method('DELETE')
                             <button class="btn" type="submit" onclick="return confirm('Are you sure?')">
-                                <font-awesome-icon icon="fa-solid fa-trash" />
+                                <font-awesome-icon icon="fa-solid fa-trash" style="color: #c4290e;" />
                             </button>
                         </form>
                     </td>

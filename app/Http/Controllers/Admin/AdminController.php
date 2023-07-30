@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewUserLoginCredentialsMail;
 use App\Models\Role;
 use App\Models\RoleUser;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -18,6 +20,7 @@ class AdminController extends Controller
     }
     public function showUser(User $user)
     {
+        $user = $user->load('roles');
         return view('admin.users.show', compact('user'));
     }
 
@@ -48,6 +51,8 @@ class AdminController extends Controller
         $password = Str::random(8);
 
         $user->update([ 'password' => \Hash::make($password) ]);
+
+        Mail::to($user->email)->send(new NewUserLoginCredentialsMail($user->email, $password));
 
         return redirect()->route('admin.users',['id'=>$user->id])
             ->with('success', 'User created successfully!');

@@ -44,28 +44,53 @@ class ChangeRequest extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function getApprovalStatusAttribute()
+    public function approvalLevels()
     {
-        $currentStatus = $this->status_id;
-
-        // Define the status IDs that represent different approval stages
-        $bsaApprovalStatusId = 2;
-        $designApprovalStatusId = 3;
-        $techLeadApprovalStatusId = 4;
-
-        if ($currentStatus === $bsaApprovalStatusId) {
-            return 'Pending BSA Analyst Approval';
-        } elseif ($currentStatus === $designApprovalStatusId) {
-            return 'Pending Design Approval';
-        } elseif ($currentStatus === $techLeadApprovalStatusId) {
-            return 'Pending Tech Lead Approval';
-        } elseif ($currentStatus === 5) {
-            // For example, status ID 5 represents fully approved status
-            return 'Fully Approved';
-        } else {
-            // If the status ID does not match any of the approval stages, return a custom status
-            return 'Approval In Progress';
-        }
-
+        return $this->belongsToMany(ApprovalLevel::class, 'approvals');
     }
+
+    public function approvals()
+    {
+        return $this->hasMany(Approval::class);
+    }
+
+    public function bsaApproval()
+    {
+        return $this->hasOne(Approval::class)->where('approval_level_id', 1);
+    }
+
+    public function designApproval()
+    {
+        return $this->hasOne(Approval::class)->where('approval_level_id', 2);
+    }
+
+    public function techLeadApproval()
+    {
+        return $this->hasOne(Approval::class)->where('approval_level_id', 3);
+    }
+
+//    public function getApprovalStatusAttribute()
+//    {
+//        $currentStatus = $this->status_id;
+//
+//        // Define the status IDs that represent different approval stages
+//        $bsaApprovalStatusId = 2;
+//        $designApprovalStatusId = 3;
+//        $techLeadApprovalStatusId = 4;
+//
+//        if ($currentStatus === $bsaApprovalStatusId) {
+//            return 'Pending BSA Analyst Approval';
+//        } elseif ($currentStatus === $designApprovalStatusId) {
+//            return 'Pending Design Approval';
+//        } elseif ($currentStatus === $techLeadApprovalStatusId) {
+//            return 'Pending Tech Lead Approval';
+//        } elseif ($currentStatus === 5) {
+//            // For example, status ID 5 represents fully approved status
+//            return 'Fully Approved';
+//        } else {
+//            // If the status ID does not match any of the approval stages, return a custom status
+//            return 'Approval In Progress';
+//        }
+
+
 }

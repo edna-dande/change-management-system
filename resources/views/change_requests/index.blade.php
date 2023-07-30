@@ -27,13 +27,17 @@
 {{--                     <td>{{ $changeRequest->status->name }}</td>--}}
                      <td>{{ $changeRequest->created_at }}</td>
                      <td>
-                         <a href="{{ route('change_requests.show', $changeRequest->id) }}"><font-awesome-icon icon="fa-solid fa-eye" /></a>
-
+                         <a href="{{ route('change_requests.show', $changeRequest->id) }}">
+                             <font-awesome-icon icon="fa-solid fa-eye" />
+                         </a>
+                         <a href="{{ route('change_requests.edit', $changeRequest->id) }}">
+                             <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                         </a>
                          <form action="{{ route('change_requests.destroy', $changeRequest->id) }}" method="POST" style="display: inline">
                              @csrf
                              @method('DELETE')
                              <button type="submit" onclick="return confirm('Are you sure you want to delete this change request?')">
-                                 <font-awesome-icon icon="fa-solid fa-trash" />
+                                 <font-awesome-icon icon="fa-solid fa-trash" style="color: #c4290e;" />
                              </button>
                          </form>
                      </td>
