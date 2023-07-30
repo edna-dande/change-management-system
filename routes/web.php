@@ -23,7 +23,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('admin.dashboard');
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified', 'admin'])->name('admin.dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -69,14 +69,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/change_requests', [ChangeRequestController::class,'index'])->name('change_requests');
 Route::get('/change_requests/create', [ChangeRequestController::class,'create'])->name('change_requests.create');
 Route::post('/change_requests', [ChangeRequestController::class,'store'])->name('change_requests.store');
-Route::get('/change_requests/show/{id}', [ChangeRequestController::class,'show'])->name('change_requests.show');
+Route::get('/change_requests/show/{changeRequest}', [ChangeRequestController::class,'show'])->name('change_requests.show');
 Route::get('/change_requests/{id}/edit', [ChangeRequestController::class,'edit'])->name('change_requests.edit');
 Route::put('/change_requests/{id}', [ChangeRequestController::class,'update'])->name('change_requests.update');
 Route::delete('/change_requests/{id}', [ChangeRequestController::class,'destroy'])->name('change_requests.destroy');
 
 Route::post('/approver/approvals/{id}/approve', [ChangeRequestController::class, 'approve'])->name('change_requests.approve');
 Route::post('/approver/approvals/{id}/reject', [ChangeRequestController::class, 'reject'])->name('change_requests.reject');
-Route::post('/change_requests/{id}/comments', [ChangeRequestController::class, 'storeComment'])->name('change_requests.comments');
+Route::post('/change_requests/{changeRequest}/comments', [ChangeRequestController::class, 'storeComment'])->name('change_requests.comments');
 Route::get('/approver/dashboard', [ChangeRequestController::class, 'approverDashboard'])->name('approver.dashboard');
 Route::get('/approver/approvals/{id}', [ChangeRequestController::class, 'viewApproverApproval'])->name('approver.approvals.view');
 Route::post('/change_requests/{id}/approve/business_analyst', [ChangeRequestController::class, 'approveBusinessAnalyst'])->name('change_requests.approve.business_analyst');

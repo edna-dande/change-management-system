@@ -68,6 +68,58 @@
         }
 
     }
+    .priority {
+        .btn {
+            width: 120px;
+            border: none;
+        }
+        .btn-success {
+            background-color: #B8EEB7;
+            color: #0FA90C;
+        }
+        .btn-danger {
+            background-color: #F1BFB5;
+            color: #D12B0A;
+        }
+        .btn-warning {
+            background-color: #F3EFCB;
+            color: #AF9D02;
+        }
+    }
+    .approval {
+        .btn {
+            width: 220px;
+            padding: 15px;
+            font-weight: 800;
+            border-radius: 20px;
+
+        }
+        .btn-outline-danger {
+            border: 1px solid #026B5B;
+            color: #026B5B;
+        }
+        .btn-success {
+            background-color: #026B5B;
+            color: #FFFFFF;
+        }
+    }
+    .custom-card {
+        border-radius: 20px;
+        .custom-body {
+            padding: 30px 30px 20px 30px;
+        }
+    }
+    .letter-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 40px;
+        //border: solid 1px #000000;
+        font-size: 30px;
+        padding-top: 1px;
+        color: #FFFFFF;
+        background-color: #F7BF11;
+    }
+
 }
 .form-group {
     padding-bottom: 10px;

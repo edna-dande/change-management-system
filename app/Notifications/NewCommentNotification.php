@@ -44,4 +44,9 @@ class NewCommentNotification extends Notification
             //
         ];
     }
+
+    public function via($notifiable)
+    {
+        return ['mail']; 
+    }
 }

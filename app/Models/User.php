@@ -82,4 +82,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(ApprovalLevel::class, 'approval_levels_users');
     }
+
+    public function getRedirectRoute()
+    {
+        if ($this->hasRole('Admin')) {
+            return "/dashboard";
+        } else {
+            return "/change_requests";
+        }
+    }
 }

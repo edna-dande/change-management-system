@@ -21,15 +21,34 @@ class ChangeRequestController extends Controller
 {
     public function index()
     {
+        $business_analysts = User::whereHas('roles',
+            function ($query) {
+                $query->where('name', 'business analyst');
+            })->get();
+        $designs = User::whereHas('roles',
+            function ($query) {
+                $query->where('name', 'design');
+            })->get();
+        $tech_leads = User::whereHas('roles',
+            function ($query) {
+                $query->where('name', 'tech_lead');
+            })->get();
+
+        $approvers = $business_analysts->merge($designs)->merge($tech_leads);
+
+//        dd($approvers);
 //        $changeRequests = ChangeRequest::with('user', 'system', 'status', 'priority')->get();
         $changeRequests = ChangeRequest::all();
+        $changeRequests->load('user', 'system', 'status', 'priority');
         return view('change_requests.index', compact('changeRequests'));
     }
     public function show(ChangeRequest $changeRequest)
     {
-        $changeRequest = ChangeRequest::orderBy('id','DESC')->get();
+          $changeRequest->load('user', 'system', 'status', 'priority');
+//        $changeRequest = ChangeRequest::orderBy('id','DESC')->get();
 //        $changeRequest = ChangeRequest::with(['approvals.approvalLevel', 'comments.user'])
 //            ->findOrFail($id);
+//        dd($changeRequest);
         return view('change_requests.show', compact('changeRequest'));
 
     }
@@ -58,6 +77,7 @@ class ChangeRequestController extends Controller
         ]);
 
         $validatedData['user_id'] = Auth::id();
+        $validatedData['status_id'] = 1;
 
         $changeRequest = ChangeRequest::create($validatedData);
 
@@ -120,7 +140,7 @@ class ChangeRequestController extends Controller
 
         $approval = new Approval([
             'change_request_id' => $changeRequest->id,
-            'approval_level_id' => 1, // Replace with the appropriate approval level ID (e.g., 1 for BSA Approval)
+            'approval_level_id' => 1,
             'user_id' => auth()->user()->id,
             'status' => 'approved',
             'reason' => $request->input('reason'),
@@ -171,7 +191,7 @@ class ChangeRequestController extends Controller
         $comment = new Comment([
             'change_request_id' => $changeRequest->id,
             'user_id' => auth()->user()->id,
-            'content' => $request->input('comment'),
+            'content' => $request->input('content'),
         ]);
 
         $changeRequest = ChangeRequest::findOrFail($id);
@@ -182,11 +202,24 @@ class ChangeRequestController extends Controller
 
         $changeRequest->user->notify(new NewCommentNotification($comment));
 
-        $business_analyst = User::where('role', 'business_analyst')->get();
-        $design = User::where('role', 'design')->get();
-        $tech_lead = User::where('role', 'tech_lead')->get();
 
-        $approvers = $business_analyst->merge($design)->merge($tech_lead);
+
+        $business_analysts = User::whereHas('roles',
+            function ($query) {
+                $query->where('name', 'business_analyst');
+            })->get();
+        $designs = User::whereHas('roles',
+            function ($query) {
+                $query->where('name', 'design');
+            })->get();
+        $tech_leads = User::whereHas('roles',
+            function ($query) {
+                $query->where('name', 'tech_lead');
+            })->get();
+
+        $approvers = $business_analysts->merge($designs)->merge($tech_leads);
+
+        // dd($approvers);
 
         Notification::send($approvers, new NewCommentNotification($comment));
 
