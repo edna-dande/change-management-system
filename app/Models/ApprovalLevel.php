@@ -9,6 +9,8 @@ class ApprovalLevel extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['type'];
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'approval_levels_users');

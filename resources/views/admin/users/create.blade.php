@@ -1,7 +1,8 @@
 <x-app-layout>
 
 {{--        @if(Auth::user()->permissions()->contains('create_user'))--}}
-            <h2>Create New User</h2>
+        <div class="container dashboard">
+            <h1>Create New User</h1>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -32,6 +33,7 @@
                 {{--        <br>--}}
                 <button type="submit" style="background-color: blue;" class="btn btn-primary">Create User</button>
             </form>
+        </div>
 {{--        @else--}}
 {{--            <p>Unauthorized</p>--}}
 {{--        @endif--}}

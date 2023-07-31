@@ -68,15 +68,18 @@
                         </table>
                     </div>
                 </div>
-                <div class="row approval">
-                    <div class="col-md-6 text-center">
-                        <!-- <div class="d-grid gap-2 mt-3"> -->
-                        <button type="button" class="btn btn-outline-danger">Decline</button>
+                @if($userCanApprove)
+
+                    <div class="row approval">
+                        <div class="col-md-6 text-center">
+                            <!-- <div class="d-grid gap-2 mt-3"> -->
+                            <button type="button" class="btn btn-outline-danger">Decline</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-success">Approve</button>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <button type="button" class="btn btn-success">Approve</button>
-                    </div>
-                </div>
+                @endif
             </div>
         </div>
         <!-- Comments Section -->

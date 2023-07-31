@@ -73,18 +73,23 @@ Route::get('/change_requests/show/{changeRequest}', [ChangeRequestController::cl
 Route::get('/change_requests/{id}/edit', [ChangeRequestController::class,'edit'])->name('change_requests.edit');
 Route::put('/change_requests/{id}', [ChangeRequestController::class,'update'])->name('change_requests.update');
 Route::delete('/change_requests/{id}', [ChangeRequestController::class,'destroy'])->name('change_requests.destroy');
-
-Route::post('/approver/approvals/{id}/approve', [ChangeRequestController::class, 'approve'])->name('change_requests.approve');
-Route::post('/approver/approvals/{id}/reject', [ChangeRequestController::class, 'reject'])->name('change_requests.reject');
 Route::post('/change_requests/{changeRequest}/comments', [ChangeRequestController::class, 'storeComment'])->name('change_requests.comments');
-Route::get('/approver/dashboard', [ChangeRequestController::class, 'approverDashboard'])->name('approver.dashboard');
-Route::get('/approver/approvals/{id}', [ChangeRequestController::class, 'viewApproverApproval'])->name('approver.approvals.view');
-Route::post('/change_requests/{id}/approve/business_analyst', [ChangeRequestController::class, 'approveBusinessAnalyst'])->name('change_requests.approve.business_analyst');
-Route::post('/change_requests/{id}/approve/design', [ChangeRequestController::class, 'approveDesign'])->name('change_requests.approve.design');
-Route::post('/change_requests/{id}/approve/tech_lead', [ChangeRequestController::class, 'approveTechLead'])->name('change_requests.approve.tech_lead');
-Route::post('/change_requests/{id}/reject/business_analyst', [ChangeRequestController::class, 'rejectBusinessAnalyst'])->name('change_requests.reject.business_analyst');
-Route::post('/change_requests/{id}/reject/design', [ChangeRequestController::class, 'rejectDesign'])->name('change_requests.reject.approve.design');
-Route::post('/change_requests/{id}/reject/tech_lead', [ChangeRequestController::class, 'rejectTechLead'])->name('change_requests.reject.tech_lead');
+
+
+// Route::post('/approver/approvals/{id}/approve', [ChangeRequestController::class, 'approve'])->name('change_requests.approve');
+// Route::post('/approver/approvals/{id}/reject', [ChangeRequestController::class, 'reject'])->name('change_requests.reject');
+// Route::get('/approver/dashboard', [ChangeRequestController::class, 'approverDashboard'])->name('approver.dashboard');
+// Route::get('/approver/approvals/{id}', [ChangeRequestController::class, 'viewApproverApproval'])->name('approver.approvals.view');
+// Route::post('/change_requests/{id}/approve/business_analyst', [ChangeRequestController::class, 'approveBusinessAnalyst'])->name('change_requests.approve.business_analyst');
+// Route::post('/change_requests/{id}/approve/design', [ChangeRequestController::class, 'approveDesign'])->name('change_requests.approve.design');
+// Route::post('/change_requests/{id}/approve/tech_lead', [ChangeRequestController::class, 'approveTechLead'])->name('change_requests.approve.tech_lead');
+// Route::post('/change_requests/{id}/reject/business_analyst', [ChangeRequestController::class, 'rejectBusinessAnalyst'])->name('change_requests.reject.business_analyst');
+// Route::post('/change_requests/{id}/reject/design', [ChangeRequestController::class, 'rejectDesign'])->name('change_requests.reject.approve.design');
+// Route::post('/change_requests/{id}/reject/tech_lead', [ChangeRequestController::class, 'rejectTechLead'])->name('change_requests.reject.tech_lead');
+
+Route::post('/approve/bsa/{changeRequest}', [ApprovalController::class, 'bsaApproval'])->name('approve.bsa');
+Route::post('/approve/design/{changeRequest}', [ApprovalController::class, 'designApproval'])->name('approve.design');
+
 
 
 // Route::post('/change_requests/{change_request}/comments', [CommentController::class, 'store'])->name('comments.store');

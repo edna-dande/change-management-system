@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             UserSeeder::class,
             StatusSeeder::class,
-            PrioritySeeder::class
+            PrioritySeeder::class,
+            RoleUserSeeder::class,
+            RolePermissionSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 

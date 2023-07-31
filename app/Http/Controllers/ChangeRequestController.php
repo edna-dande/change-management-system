@@ -45,11 +45,27 @@ class ChangeRequestController extends Controller
     public function show(ChangeRequest $changeRequest)
     {
           $changeRequest->load('user', 'system', 'status', 'priority');
-//        $changeRequest = ChangeRequest::orderBy('id','DESC')->get();
-//        $changeRequest = ChangeRequest::with(['approvals.approvalLevel', 'comments.user'])
-//            ->findOrFail($id);
-//        dd($changeRequest);
-        return view('change_requests.show', compact('changeRequest'));
+
+            $userType = 'user';
+
+            $user = Auth::user();
+            $userCanApprove = false;
+
+            $nextPendingApproval = $changeRequest->nextPendingApproval;
+
+             $changeRequest->approvalStatus;
+
+            if($nextPendingApproval == 'bsa' && $user->hasRole('business analyst')) {
+                $userCanApprove = true;
+            } else if($nextPendingApproval == 'design' && $user->hasRole('design')) {
+                $userCanApprove = true;
+            } else if($nextPendingApproval == 'tech_lead' && $user->hasRole('tech lead')) {
+                $userCanApprove = true;
+            }
+
+        // $comments = $changeRequest->comments;
+
+        return view('change_requests.show', compact('changeRequest', 'userType', 'userCanApprove'));
 
     }
     public function create()

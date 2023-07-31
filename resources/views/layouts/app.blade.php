@@ -62,7 +62,7 @@
 {{--                                            <span class="create-text"> Create </span></a></li>--}}
 {{--                                @endif--}}
                                     @if(request()->routeIs('change_requests*'))
-                                        <li class="active"><a href="{{ route('change_requests') }}"><img src="/images/request_white.png" alt="request">Requests</a></li>
+                                        <li class="active"><a href="{{ route('change_requests') }}"><img src="/images/request_green.png" alt="request">Requests</a></li>
                                     @else
                                         <li><a href="{{ route('change_requests') }}"><img src="/images/request_white.png" alt="request">Requests</a></li>
                                     @endif
