@@ -78,6 +78,7 @@
 
         <!-- Page Content -->
         <main class="col-md-10">
+            @include('flash-message')
             {{ $slot }}
         </main>
     </div>

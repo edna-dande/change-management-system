@@ -56,24 +56,24 @@
                             </thead>
                             <tr>
                                 <td>BSA Approval</td>
-                                <td>{{ $changeRequest->bsaApproval ? $changeRequest->bsaApproval->status->name : '' }}</td>
+                                <td>{{ $changeRequest->bsaApproval ? $changeRequest->bsaApproval->status?->name : '' }}</td>
                                 <td>{{ $changeRequest->bsaApproval ? $changeRequest->bsaApproval->reason : '' }}</td>
                             </tr>
                             <tr>
                                 <td>Design Approval</td>
-                                <td>{{ $changeRequest->designApproval ? $changeRequest->designApproval->status->name : '' }}</td>
+                                <td>{{ $changeRequest->designApproval ? $changeRequest->designApproval->status?->name : '' }}</td>
                                 <td>{{ $changeRequest->designApproval ? $changeRequest->designApproval->reason : '' }}</td>
                             </tr>
                             <tr>
                                 <td>Tech Lead Approval</td>
-                                <td>{{ $changeRequest->techLeadApproval ? $changeRequest->techLeadApproval->status->name : '' }}</td>
+                                <td>{{ $changeRequest->techLeadApproval ? $changeRequest->techLeadApproval->status?->name : '' }}</td>
                                 <td>{{ $changeRequest->techLeadApproval ? $changeRequest->techLeadApproval->reason : '' }}</td>
                             </tr>
                         </table>
                     </div>
                 </div>
-                @if($userCanApprove)
 
+                @if($userCanApprove)
                     <form action="{{ route('change_requests.approval', $changeRequest->id) }}" method="POST">
                         @csrf
                         @if ($errors->any())
@@ -150,7 +150,9 @@
                         </div> -->
 
                     </form>
-                @endif
+                        @if ($changeRequest->isFullyApproved())
+                            <a href="{{ route('change_requests.assign', $changeRequest->id) }}" class="btn btn-primary">Assign to Developer</a>
+                        @endif
             </div>
         </div>
 

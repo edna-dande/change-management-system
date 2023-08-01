@@ -44,6 +44,11 @@ class ChangeRequest extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function isFullyApproved()
+    {
+        return $this->approvals->where('status', 'approved')->count() === 3;
+    }
+
     public function approvalLevels()
     {
         return $this->belongsToMany(ApprovalLevel::class, 'approvals');

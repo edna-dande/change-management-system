@@ -75,6 +75,11 @@ Route::put('/change_requests/{id}', [ChangeRequestController::class,'update'])->
 Route::delete('/change_requests/{id}', [ChangeRequestController::class,'destroy'])->name('change_requests.destroy');
 Route::post('/change_requests/{changeRequest}/comments', [ChangeRequestController::class, 'storeComment'])->name('change_requests.comments');
 Route::post('/change_requests/{changeRequest}/approval', [ChangeRequestController::class, 'approval'])->name('change_requests.approval');
+
+Route::get('/change_requests/{changeRequest}/assign', [ChangeRequestController::class,'showAssignForm'])->name('change_requests.assign');
+Route::post('/change_requests/{changeRequest}/assign', [ChangeRequestController::class,'assignDeveloper'])->name('change_requests.assign.developer');
+
+
 //Route::post('/change_requests/{changeRequest}/reject', [ChangeRequestController::class, 'reject'])->name('change_requests.reject');
 
 

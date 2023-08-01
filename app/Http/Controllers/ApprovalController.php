@@ -73,8 +73,6 @@ class ApprovalController extends Controller
             ->with('error', 'You are not authorized for Design Approval.');
     }
 
-    // Similar methods can be created for Tech Lead Approval and other levels
-
      public function techLeadApproval(ChangeRequest $changeRequest, Request $request)
      {
          if (Auth::user()->hasRole('Tech Lead')) {
