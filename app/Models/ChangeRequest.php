@@ -69,11 +69,35 @@ class ChangeRequest extends Model
         return $this->hasOne(Approval::class)->where('approval_level_id', 3);
     }
 
+    public function bsaApprovalStatus()
+    {
+        return $this->whereHas('bsaApproval',
+            function ($query) {
+                $query->where('status_id', 6);
+            })->get();
+    }
+
+    public function designApprovalStatus()
+    {
+        return $this->whereHas('designApproval',
+            function ($query) {
+                $query->where('status_id', 6);
+            })->get();
+    }
+
+    public function techLeadApprovalStatus()
+    {
+        return $this->whereHas('techLeadApproval',
+            function ($query) {
+                $query->where('status_id', 6);
+            })->get();
+    }
+
     public function getNextPendingApprovalAttribute()
     {
-        $bsaApproval = $this->bsaApproval;
-        $designApproval = $this->designApproval;
-        $techLeadApproval = $this->techLeadApproval;
+        $bsaApproval = $this->bsaApprovalStatus();
+        $designApproval = $this->designApprovalStatus();
+        $techLeadApproval = $this->techLeadApprovalStatus();
 
         if($techLeadApproval) {
             return null;

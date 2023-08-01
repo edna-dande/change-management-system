@@ -74,10 +74,10 @@ Route::get('/change_requests/{id}/edit', [ChangeRequestController::class,'edit']
 Route::put('/change_requests/{id}', [ChangeRequestController::class,'update'])->name('change_requests.update');
 Route::delete('/change_requests/{id}', [ChangeRequestController::class,'destroy'])->name('change_requests.destroy');
 Route::post('/change_requests/{changeRequest}/comments', [ChangeRequestController::class, 'storeComment'])->name('change_requests.comments');
+Route::post('/change_requests/{changeRequest}/approval', [ChangeRequestController::class, 'approval'])->name('change_requests.approval');
+//Route::post('/change_requests/{changeRequest}/reject', [ChangeRequestController::class, 'reject'])->name('change_requests.reject');
 
 
-// Route::post('/approver/approvals/{id}/approve', [ChangeRequestController::class, 'approve'])->name('change_requests.approve');
-// Route::post('/approver/approvals/{id}/reject', [ChangeRequestController::class, 'reject'])->name('change_requests.reject');
 // Route::get('/approver/dashboard', [ChangeRequestController::class, 'approverDashboard'])->name('approver.dashboard');
 // Route::get('/approver/approvals/{id}', [ChangeRequestController::class, 'viewApproverApproval'])->name('approver.approvals.view');
 // Route::post('/change_requests/{id}/approve/business_analyst', [ChangeRequestController::class, 'approveBusinessAnalyst'])->name('change_requests.approve.business_analyst');

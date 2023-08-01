@@ -42,11 +42,14 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
 //            'password' => 'required|string|min:8',
+            'role_ids' => 'required|array',
+
         ]);
 
         $user = User::create($validatedData);
 
-        RoleUser::create(['role_id'=>$request->role_id,'user_id'=>$user->id]);
+        RoleUser::create(['user_id'=>$user->id]);
+        $user->roles()->attach($validatedData['role_ids']);
 
         $password = Str::random(8);
 

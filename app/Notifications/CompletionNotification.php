@@ -7,18 +7,26 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewCommentNotification extends Notification
+class CompletionNotification extends Notification
 {
     use Queueable;
-
-    protected $comment;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($comment)
+    public function __construct($changeRequest)
     {
-        $this->comment = $comment;
+        $this->changeRequest = $changeRequest;
+    }
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array<int, string>
+     */
+    public function via(object $notifiable): array
+    {
+        return ['mail'];
     }
 
     /**
@@ -27,12 +35,10 @@ class NewCommentNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('New Comment on Change Request')
-            ->line('A new comment has been added to the change request.')
-            ->line('Comment: '.$this->comment->content)
-            ->action('View Change Request', route('change_requests.show', $this->comment->changeRequest->id))
+            ->subject('Change Request Completed')
+            ->line('Your change request has been marked as completed.')
+            ->action('View Change Request', route('change_requests.show', $this->changeRequest->id))
             ->line('Thank you for using our application!');
-
     }
 
     /**
@@ -45,10 +51,5 @@ class NewCommentNotification extends Notification
         return [
             //
         ];
-    }
-
-    public function via($notifiable)
-    {
-        return ['mail'];
     }
 }

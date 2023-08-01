@@ -21,7 +21,7 @@
                 <input class="form-control" type="email" name="email" required>
                 <br>
                 <label for="role">Role:</label>
-                <select name="role_id" id="role_id" class="form-control" required>
+                <select name="role_ids[]" id="role_ids" class="form-control" multiple required>
                     <option value="">Select a role</option>
                     @foreach ($roles as $role)
                         <option value="{{ $role->id }}">{{ $role->name }}</option>

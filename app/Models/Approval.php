@@ -13,6 +13,7 @@ class Approval extends Model
         'user_id',
         'change_request_id',
         'reason',
+        'status_id',
         'approval_level_id',
         'status'
         ];
