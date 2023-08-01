@@ -1,6 +1,8 @@
 <x-app-layout>
 
     {{--        @if(Auth::user()->permissions()->contains('create_user'))--}}
+    <div class="dashboard">
+
     <h2>Create New Role</h2>
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -19,10 +21,11 @@
         {{--        <label for="password">Password:</label>--}}
         {{--        <input class="form-control" type="password" name="password" required>--}}
         {{--        <br>--}}
-        <button type="submit" style="background-color: blue;" class="btn btn-primary">Create Role</button>
+        <button type="submit" class="btn btn-primary">Create Role</button>
     </form>
     {{--        @else--}}
     {{--            <p>Unauthorized</p>--}}
     {{--        @endif--}}
+    </div>
 
 </x-app-layout>

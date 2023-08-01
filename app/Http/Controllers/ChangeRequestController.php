@@ -7,6 +7,7 @@ use App\Models\ApprovalLevel;
 use App\Models\ChangeRequest;
 use App\Models\Comment;
 use App\Models\Priority;
+use App\Models\Role;
 use App\Models\Status;
 use App\Models\System;
 use App\Models\User;
@@ -32,7 +33,7 @@ class ChangeRequestController extends Controller
             })->get();
         $tech_leads = User::whereHas('roles',
             function ($query) {
-                $query->where('name', 'tech_lead');
+                $query->where('name', 'tech lead');
             })->get();
 
         $approvers = $business_analysts->merge($designs)->merge($tech_leads);
@@ -52,9 +53,11 @@ class ChangeRequestController extends Controller
 
         $user = Auth::user();
         $userCanApprove = false;
+        $assign = false;
 
         $nextPendingApproval = $changeRequest->nextPendingApproval;
 
+//        dd($nextPendingApproval);
         $changeRequest->approvalStatus;
 
         if ($nextPendingApproval == 'bsa' && $user->hasRole('business analyst')) {
@@ -63,9 +66,11 @@ class ChangeRequestController extends Controller
             $userCanApprove = true;
         } else if ($nextPendingApproval == 'tech_lead' && $user->hasRole('tech lead')) {
             $userCanApprove = true;
+        } else if ($nextPendingApproval == 'assign' && $user->hasRole('tech lead')) {
+            $assign = true;
         }
 
-        return view('change_requests.show', compact('changeRequest', 'userType', 'userCanApprove'));
+        return view('change_requests.show', compact('changeRequest', 'userType', 'userCanApprove', 'assign'));
 
     }
 
@@ -91,7 +96,7 @@ class ChangeRequestController extends Controller
             'current_process' => 'required',
             'proposed_process' => 'required',
             // 'user_id' => 'required',
-            // 'priority_id' => 'required|exists:priorities,id',
+             'priority_id' => 'required|exists:priorities,id',
         ]);
 
         $validatedData['user_id'] = Auth::id();
@@ -153,25 +158,7 @@ class ChangeRequestController extends Controller
             ->with('success', 'Change request deleted successfully!');
     }
 
-    public function approve(Request $request, $id)
-    {
-        $changeRequest = ChangeRequest::findOrFail($id);
 
-//        $approvals = Approval::where('change_request_id', $changeRequest->id)->get();
-//        $allApproved = $approvals->every(function ($approval) {
-//            return $approval->status === 'approved';
-//        });
-//
-//        if ($allApproved) {
-//            $changeRequest->status = 'approved';
-//        } else {
-//            $changeRequest->status = 'pending';
-//        }
-//        $changeRequest->save();
-
-        return redirect()->route('change_requests.show', $changeRequest->id)
-            ->with('success', 'Change request approved successfully.');
-    }
 
     public function approval(Request $request, $id)
     {
@@ -182,7 +169,7 @@ class ChangeRequestController extends Controller
             $approvalId = 1;
         } elseif (Auth::user()->hasRole('design')) {
             $approvalId = 2;
-        } else {
+        } elseif (Auth::user()->hasRole('tech lead')) {
             $approvalId = 3;
         }
         switch ($request->input('action')) {
@@ -196,6 +183,16 @@ class ChangeRequestController extends Controller
                 ]);
 
                 $approval->save();
+                if (Auth::user()->hasRole('business analyst')) {
+                    $changeRequest->status_id = 2;
+                    $changeRequest->update();
+                } elseif (Auth::user()->hasRole('design')) {
+                    $changeRequest->status_id = 3;
+                    $changeRequest->update();
+                } elseif (Auth::user()->hasRole('tech lead')) {
+                    $changeRequest->status_id = 6;
+                    $changeRequest->update();
+                }
 
                 $changeRequest->user->notify(new ChangeRequestApprovedNotification($changeRequest));
                 break;
@@ -273,14 +270,11 @@ class ChangeRequestController extends Controller
     {
         $changeRequest = ChangeRequest::findOrFail($id);
 
-        if (!$changeRequest->isFullyApproved() || !Auth::user()->hasRole('tech_lead')) {
+        if ($changeRequest->nextPendingApproval  != 'assign' || !Auth::user()->hasRole('tech lead')) {
             abort(403, 'Unauthorized action.');
         }
 
-        $developers = User::whereHas('roles',
-            function ($query) {
-                $query->where('name', 'developer');
-            })->get();
+        $developers = Role::where('name', 'developer')->firstOrFail()->users;
 
         return view('change_requests.assign_form', compact('changeRequest', 'developers'));
     }
@@ -289,7 +283,7 @@ class ChangeRequestController extends Controller
     {
         $changeRequest = ChangeRequest::findOrFail($id);
 
-        if (!$changeRequest->isFullyApproved() || !Auth::user()->hasRole('tech_lead')) {
+        if ($changeRequest->nextPendingApproval  != 'assign' || !Auth::user()->hasRole('tech lead')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -300,14 +294,21 @@ class ChangeRequestController extends Controller
 
         $developer = User::findOrFail($validatedData['developer']);
 
+        if (!$developer->hasRole('developer')) {
+            return redirect()->route('change_requests.show', $changeRequest->id)
+                ->with('error', 'Selected user is not a developer.');
+        }
+
         $changeRequest->assigned_to = $developer->id;
         $changeRequest->completion_date = $validatedData['completion_date'];
-        $changeRequest->save();
+        $changeRequest->status_id = 7;
+
+        $changeRequest->update();
 
         return redirect()->route('change_requests.show', $changeRequest->id)
             ->with('success', 'Change request assigned to developer successfully.');
     }
-    
+
     public function approverDashboard()
     {
         // Retrieve pending change requests for the current approver

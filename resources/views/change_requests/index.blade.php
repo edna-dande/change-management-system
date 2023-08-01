@@ -25,7 +25,19 @@
              @forelse ($changeRequests as $changeRequest)
                  <tr>
                      <td>{{ $changeRequest->title }}</td>
-                     <td>{{ $changeRequest->status ? $changeRequest->status->name : 'N/A' }}</td>
+                     <td>
+                         @if($changeRequest->status_id == 1 || $changeRequest->status_id == 2 || $changeRequest->status_id == 3)
+                             <span class="btn btn-pending">{{ $changeRequest->status ? $changeRequest->status->name : 'N/A' }}</span>
+                         @elseif($changeRequest->status_id == 7)
+                             <span class="btn btn-progress">{{ $changeRequest->status ? $changeRequest->status->name : 'N/A' }}</span>
+                         @elseif($changeRequest->status_id == 6)
+                             <span class="btn btn-approved">{{ $changeRequest->status ? $changeRequest->status->name : 'N/A' }}</span>
+                         @elseif($changeRequest->status_id == 5)
+                             <span class="btn btn-rejected">{{ $changeRequest->status ? $changeRequest->status->name : 'N/A' }}</span>
+                         @else
+                             <span class="btn btn-complete">{{ $changeRequest->status ? $changeRequest->status->name : 'N/A' }}</span>
+                         @endif
+                     </td>
 {{--                     <td>{{ $changeRequest->status->name }}</td>--}}
                      <td>{{ $changeRequest->created_at }}</td>
                      <td>

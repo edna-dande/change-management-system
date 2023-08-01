@@ -44,4 +44,24 @@
 nav.border-b {
     border-bottom: solid 0.5px #000000;
 }
+.btn-pending, .btn-pending:hover {
+    background-color: #D0D5D6;
+    color: #737271;
+}
+.btn-approved, .btn-approved:hover {
+    background-color: #C7EBF5;
+    color: #0D9AC0;
+}
+.btn-rejected, .btn-rejected:hover {
+    background-color: #F3B7AA;
+    color: #C42A08;
+}
+.btn-complete, .btn-complete:hover {
+    background-color: #B9F3B3;
+    color: #34BD0F;
+}
+.btn-progress, .btn-progress:hover {
+    background-color: #F2D49A;
+    color: #CD8603;
+}
 

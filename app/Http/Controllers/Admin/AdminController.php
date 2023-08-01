@@ -46,9 +46,11 @@ class AdminController extends Controller
 
         ]);
 
+//        dd($validatedData);
+
         $user = User::create($validatedData);
 
-        RoleUser::create(['user_id'=>$user->id]);
+//        RoleUser::create(['user_id'=>$user->id]);
         $user->roles()->attach($validatedData['role_ids']);
 
         $password = Str::random(8);

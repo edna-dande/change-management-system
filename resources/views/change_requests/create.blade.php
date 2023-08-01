@@ -24,14 +24,14 @@
 {{--                        @endforeach--}}
 {{--                    </select>--}}
 {{--                </div>--}}
-{{--                <div class="form-group">--}}
-{{--                    <label for="priority_id">Priority</label>--}}
-{{--                    <select name="priority_id" id="priority_id" class="form-control" required>--}}
-{{--                        @foreach ($priorities as $priority)--}}
-{{--                            <option value="{{ $priority->id }}">{{ $priority->name }}</option>--}}
-{{--                        @endforeach--}}
-{{--                    </select>--}}
-{{--                </div>--}}
+                <div class="form-group">
+                    <label for="priority_id">Priority</label>
+                    <select name="priority_id" id="priority_id" class="form-control" required>
+                        @foreach ($priorities as $priority)
+                            <option value="{{ $priority->id }}">{{ $priority->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="objective">Objective<span class="required">*</span></label>
                     <textarea name="objective" id="objective" class="form-control" rows="4" placeholder="Type your Objective here..." required></textarea>

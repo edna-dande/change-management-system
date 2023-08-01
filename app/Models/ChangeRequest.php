@@ -24,6 +24,10 @@ class ChangeRequest extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function developer() {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+
     // ChangeRequest belongs to System (Many-to-One)
     public function system() {
         return $this->belongsTo(System::class);
@@ -79,7 +83,7 @@ class ChangeRequest extends Model
         return $this->whereHas('bsaApproval',
             function ($query) {
                 $query->where('status_id', 6);
-            })->get();
+            })->where('id', $this->id)->get();
     }
 
     public function designApprovalStatus()
@@ -87,7 +91,7 @@ class ChangeRequest extends Model
         return $this->whereHas('designApproval',
             function ($query) {
                 $query->where('status_id', 6);
-            })->get();
+            })->where('id', $this->id)->get();
     }
 
     public function techLeadApprovalStatus()
@@ -95,7 +99,7 @@ class ChangeRequest extends Model
         return $this->whereHas('techLeadApproval',
             function ($query) {
                 $query->where('status_id', 6);
-            })->get();
+            })->where('id', $this->id)->get();
     }
 
     public function getNextPendingApprovalAttribute()
@@ -103,12 +107,15 @@ class ChangeRequest extends Model
         $bsaApproval = $this->bsaApprovalStatus();
         $designApproval = $this->designApprovalStatus();
         $techLeadApproval = $this->techLeadApprovalStatus();
-
-        if($techLeadApproval) {
+        $assigned = $this->developer();
+//dd($this->id, $bsaApproval, $designApproval, $techLeadApproval);
+        if($assigned) {
             return null;
-        } else if ($designApproval) {
+        } else if(!$techLeadApproval->isEmpty()) {
+            return 'assign';
+        } else if (!$designApproval->isEmpty()) {
             return 'tech_lead';
-        } else if ($bsaApproval) {
+        } else if (!$bsaApproval->isEmpty()) {
             return 'design';
         } else {
             return 'bsa';

@@ -42,7 +42,6 @@
                 <p class="card-text"><strong>Proposed Process:</strong></p>
                 <p>{{ $changeRequest->proposed_process }}</p>
 
-
                 <p class="card-text"><strong>Approval Status:</strong></p>
                 <div class="row">
                     <div class="col-md-12">
@@ -56,17 +55,17 @@
                             </thead>
                             <tr>
                                 <td>BSA Approval</td>
-                                <td>{{ $changeRequest->bsaApproval ? $changeRequest->bsaApproval->status?->name : '' }}</td>
+                                <td><span class="btn {{ $changeRequest->bsaApproval ? ($changeRequest->bsaApproval->status_id == 6 ? 'btn-approved' : 'btn-rejected') : '' }}">{{ $changeRequest->bsaApproval ? $changeRequest->bsaApproval->status?->name : '' }}</span></td>
                                 <td>{{ $changeRequest->bsaApproval ? $changeRequest->bsaApproval->reason : '' }}</td>
                             </tr>
                             <tr>
                                 <td>Design Approval</td>
-                                <td>{{ $changeRequest->designApproval ? $changeRequest->designApproval->status?->name : '' }}</td>
+                                <td><span class="btn {{ $changeRequest->designApproval ? ($changeRequest->designApproval->status_id == 6 ? 'btn-approved' : 'btn-rejected') : '' }}">{{ $changeRequest->designApproval ? $changeRequest->designApproval->status?->name : '' }}</span></td>
                                 <td>{{ $changeRequest->designApproval ? $changeRequest->designApproval->reason : '' }}</td>
                             </tr>
                             <tr>
                                 <td>Tech Lead Approval</td>
-                                <td>{{ $changeRequest->techLeadApproval ? $changeRequest->techLeadApproval->status?->name : '' }}</td>
+                                <td><span class="btn {{ $changeRequest->techLeadApproval ? ($changeRequest->techLeadApproval->status_id == 6 ? 'btn-approved' : 'btn-rejected') : '' }}">{{ $changeRequest->techLeadApproval ? $changeRequest->techLeadApproval->status?->name : '' }}</span></td>
                                 <td>{{ $changeRequest->techLeadApproval ? $changeRequest->techLeadApproval->reason : '' }}</td>
                             </tr>
                         </table>
@@ -102,6 +101,9 @@
                     {{--                            <form action="{{ route('change_requests.reject', $changeRequest->id) }}" method="POST">--}}
 
                 @endif
+                @if ($assign)
+                    <a href="{{ route('change_requests.assign', $changeRequest->id) }}" class="btn btn-primary">Assign</a>
+                @endif
             </div>
         </div>
         <!-- Comments Section -->
@@ -131,7 +133,7 @@
                 @else
                     <p>No comments yet.</p>
                 @endif
-                @if(auth()->user()->id === $changeRequest->user_id || auth()->user()->role === 'business analyst' || auth()->user()->role === 'design' || auth()->user()->role === 'tech lead')
+                @if(auth()->user()->id === $changeRequest->user_id || auth()->user()->hasRole('business analyst') || auth()->user()->hasRole('design') || auth()->user()->hasRole('tech lead'))
                     <form action="{{ route('change_requests.comments', ['changeRequest' => $changeRequest->id]) }}" method="POST">
                         @csrf
                         <div class="row ">
@@ -150,9 +152,7 @@
                         </div> -->
 
                     </form>
-                        @if ($changeRequest->isFullyApproved())
-                            <a href="{{ route('change_requests.assign', $changeRequest->id) }}" class="btn btn-primary">Assign to Developer</a>
-                        @endif
+                @endif
             </div>
         </div>
 

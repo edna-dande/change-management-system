@@ -1,8 +1,8 @@
 <x-app-layout>
 
     {{--        @if(Auth::user()->permissions()->contains('edit_user'))--}}
-    <div class="container">
-        <h2>Edit Role</h2>
+    <div class="container dashboard">
+        <h1>Edit Role</h1>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -20,7 +20,7 @@
             <label for="name">Name:</label>
             <input class="form-control" type="text" name="name" value="{{ $role->name }}" required>
             <br>
-            <button type="submit" style="background-color: blue;" class="btn btn-primary">Update Role</button>
+            <button type="submit" class="btn btn-primary">Update Role</button>
         </form>
     </div>
     {{--        @else--}}

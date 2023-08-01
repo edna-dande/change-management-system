@@ -1,7 +1,7 @@
 <x-app-layout>
     {{--    @if(Auth::user()->permissions()->contains('view_user'))--}}
-    <div class="container">
-        <h2>System Details</h2>
+    <div class="container dashboard">
+        <h1>System Details</h1>
         <p>Name: {{ $system->name }}</p>
         <p>Description: {{ $system->description }}</p>
         {{--            @endif--}}

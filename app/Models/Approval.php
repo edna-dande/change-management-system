@@ -20,7 +20,7 @@ class Approval extends Model
 
 
     public function changeRequest() {
-        return $this->belongsTo(ChangeRequest::class);
+        return $this->belongsTo(ChangeRequest::class, 'change_request_id');
     }
 
     public function user() {

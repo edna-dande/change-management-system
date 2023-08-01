@@ -31,7 +31,7 @@
                             @endforeach
                         </select>
                         <br>
-                        <button type="submit" style="background-color: blue;" class="btn btn-primary">Update User</button>
+                        <button type="submit" class="btn btn-primary">Update User</button>
                     </form>
             </div>
 {{--        @else--}}

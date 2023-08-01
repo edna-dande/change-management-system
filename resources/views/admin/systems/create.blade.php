@@ -23,7 +23,7 @@
             {{--        <label for="password">Password:</label>--}}
             {{--        <input class="form-control" type="password" name="password" required>--}}
             {{--        <br>--}}
-            <button type="submit" style="background-color: blue;" class="btn btn-primary">Create System</button>
+            <button type="submit" class="btn btn-primary">Create System</button>
         </form>
     </div>
     {{--        @else--}}
