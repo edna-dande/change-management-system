@@ -21,7 +21,7 @@ class AdminController extends Controller
     public function showUser(User $user)
     {
         $user = $user->load('roles');
-        return view('admin.users.show', compact('user'));
+        return view('user_details', compact('user'));
     }
 
     public function createUser()

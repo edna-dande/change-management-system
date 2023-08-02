@@ -11,12 +11,12 @@ class SystemController extends Controller
     public function index ()
     {
         $systems = System::orderBy('id','DESC')->get();
-        return view('admin.systems.index', compact('systems'));
+        return view('system_dashboard', compact('systems'));
     }
     public function showSystem(System $system)
     {
 //        $system = System::orderBy('id','DESC')->get();
-        return view('admin.systems.show', compact('system'));
+        return view('system_details', compact('system'));
 
     }
 

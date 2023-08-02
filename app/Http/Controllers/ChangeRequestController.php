@@ -23,6 +23,7 @@ class ChangeRequestController extends Controller
     public function index()
     {
 
+
         $business_analysts = User::whereHas('roles',
             function ($query) {
                 $query->where('name', 'business analyst');
@@ -40,7 +41,7 @@ class ChangeRequestController extends Controller
 
 //        dd($approvers);
 //        $changeRequests = ChangeRequest::with('user', 'system', 'status', 'priority')->get();
-        $changeRequests = ChangeRequest::all();
+        $changeRequests = ChangeRequest::orderBy('id','DESC')->get();
         $changeRequests->load('user', 'system', 'status', 'priority');
         return view('change_requests.index', compact('changeRequests'));
     }

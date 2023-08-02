@@ -18,6 +18,7 @@
             </tr>
             </thead>
             <tbody>
+
             @forelse($systems as $system)
                 <tr>
                     <td>{{ $system->name }}</td>

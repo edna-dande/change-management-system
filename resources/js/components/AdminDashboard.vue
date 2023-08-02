@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                 <tr v-if="users.length === 0">
-                    <td colspan="3">No users</td>
+                    <td colspan="4">No users</td>
                 </tr>
                 <tr v-else v-for="user in users" :key="user.id">
                     <td>{{ user.name }}</td>
