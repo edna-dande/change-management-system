@@ -111,10 +111,10 @@ class ChangeRequestController extends Controller
 
         $approvalLevels = ApprovalLevel::all();
 
-        foreach ($approvalLevels as $approvalLevel) {
-            $approval = new Approval(['approval_level_id' => $approvalLevel->id]);
-            $changeRequest->approvals()->save($approval);
-        }
+//        foreach ($approvalLevels as $approvalLevel) {
+//            $approval = new Approval(['approval_level_id' => $approvalLevel->id]);
+//            $changeRequest->approvals()->save($approval);
+//        }
 
         $changeRequest->save();
 
@@ -218,6 +218,8 @@ class ChangeRequestController extends Controller
 
                 $approvers = $business_analysts->merge($designs)->merge($tech_leads);
 
+//                dd($approvers);
+
                 Notification::send($approvers, new ChangeRequestApprovedNotification($changeRequest));
 
                 break;
@@ -236,6 +238,9 @@ class ChangeRequestController extends Controller
                 $approval = new Approval($validatedData);
 
                 $approval->save();
+
+                $changeRequest->status_id = 5;
+                $changeRequest->update();
 
                 $changeRequest->user->notify(new ChangeRequestRejectedNotification($changeRequest));
 

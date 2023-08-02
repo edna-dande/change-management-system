@@ -86,7 +86,7 @@
                             </div>
                         @endif
                         <div class="form-group" style="margin-top: 20px;">
-                            <textarea name="reason" id="reason" class="form-control" rows="2" ></textarea>
+                            <textarea name="reason" id="reason" class="form-control" rows="2" placeholder="Please enter reason..."></textarea>
                         </div>
                         <div class="row approval" style="margin-top: 20px;">
                             <div class="col-md-6 text-center">

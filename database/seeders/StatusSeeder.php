@@ -15,11 +15,12 @@ class StatusSeeder extends Seeder
     {
         $statuses = [
             ['id' => '1', 'name' => 'Pending'],
-            ['id' => '2', 'name' => 'In Progress, Pending Design Approval'],
-            ['id' => '3', 'name' => 'In Progress, Pending Tech Lead Approval'],
+            ['id' => '2', 'name' => 'Pending Design Approval'],
+            ['id' => '3', 'name' => 'Pending Tech Lead Approval'],
             ['id' => '4', 'name' => 'Completed'],
-            ['id' => '5', 'name' => 'Rejected']
-
+            ['id' => '5', 'name' => 'Rejected'],
+            ['id' => '6', 'name' => 'Approved'],
+            ['id' => '7', 'name' => 'In Progress']
         ];
 
         foreach ($statuses as $status)

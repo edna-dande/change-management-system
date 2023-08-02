@@ -86,11 +86,27 @@ class ChangeRequest extends Model
             })->where('id', $this->id)->get();
     }
 
+    public function bsaRejectionStatus()
+    {
+        return $this->whereHas('bsaApproval',
+            function ($query) {
+                $query->where('status_id', 5);
+            })->where('id', $this->id)->get();
+    }
+
     public function designApprovalStatus()
     {
         return $this->whereHas('designApproval',
             function ($query) {
                 $query->where('status_id', 6);
+            })->where('id', $this->id)->get();
+    }
+
+    public function designRejectionStatus()
+    {
+        return $this->whereHas('designApproval',
+            function ($query) {
+                $query->where('status_id', 5);
             })->where('id', $this->id)->get();
     }
 
@@ -102,14 +118,26 @@ class ChangeRequest extends Model
             })->where('id', $this->id)->get();
     }
 
+    public function techLeadRejectionStatus()
+    {
+        return $this->whereHas('techLeadApproval',
+            function ($query) {
+                $query->where('status_id', 5);
+            })->where('id', $this->id)->get();
+    }
+
     public function getNextPendingApprovalAttribute()
     {
+//        dd($this->developer);
         $bsaApproval = $this->bsaApprovalStatus()->first();
+        $bsaRejection = $this->bsaRejectionStatus()->first();
         $designApproval = $this->designApprovalStatus()->first();
+        $designRejection = $this->designRejectionStatus()->first();
         $techLeadApproval = $this->techLeadApprovalStatus()->first();
+        $techLeadRejection = $this->techLeadRejectionStatus()->first();
         $assigned = $this->developer;
 
-        if ($assigned) {
+        if ($assigned || $bsaRejection || $designRejection || $techLeadRejection) {
             return null;
         } else if ($techLeadApproval) {
             return 'assign';
