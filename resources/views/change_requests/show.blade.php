@@ -104,6 +104,9 @@
                 @if ($assign)
                     <a href="{{ route('change_requests.assign', $changeRequest->id) }}" class="btn btn-primary">Assign</a>
                 @endif
+                @if($markCompleted && $changeRequest->assigned_to == auth()->id())
+                    <a href="{{ route('change_requests.complete', $changeRequest->id) }}" class="btn btn-primary">Completed</a>
+                @endif
             </div>
         </div>
         <!-- Comments Section -->

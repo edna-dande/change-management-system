@@ -71,6 +71,7 @@ Route::get('/change_requests/create', [ChangeRequestController::class,'create'])
 Route::post('/change_requests', [ChangeRequestController::class,'store'])->name('change_requests.store');
 Route::get('/change_requests/show/{changeRequest}', [ChangeRequestController::class,'show'])->name('change_requests.show');
 Route::get('/change_requests/{id}/edit', [ChangeRequestController::class,'edit'])->name('change_requests.edit');
+Route::get('/change_requests/{id}/complete', [ChangeRequestController::class,'complete'])->name('change_requests.complete');
 Route::put('/change_requests/{id}', [ChangeRequestController::class,'update'])->name('change_requests.update');
 Route::delete('/change_requests/{id}', [ChangeRequestController::class,'destroy'])->name('change_requests.destroy');
 Route::post('/change_requests/{changeRequest}/comments', [ChangeRequestController::class, 'storeComment'])->name('change_requests.comments');

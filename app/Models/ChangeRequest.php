@@ -137,8 +137,12 @@ class ChangeRequest extends Model
         $techLeadRejection = $this->techLeadRejectionStatus()->first();
         $assigned = $this->developer;
 
-        if ($assigned || $bsaRejection || $designRejection || $techLeadRejection) {
+        if ($bsaRejection || $designRejection || $techLeadRejection) {
             return null;
+        } else if ($assigned && $this->status_id == 4) {
+            return null;
+        } else if ($assigned) {
+            return 'developer';
         } else if ($techLeadApproval) {
             return 'assign';
         } else if ($designApproval) {

@@ -59,6 +59,7 @@ class ChangeRequestController extends Controller
         $user = Auth::user();
         $userCanApprove = false;
         $assign = false;
+        $markCompleted = false;
 
         $nextPendingApproval = $changeRequest->nextPendingApproval;
 
@@ -73,9 +74,11 @@ class ChangeRequestController extends Controller
             $userCanApprove = true;
         } else if ($nextPendingApproval == 'assign' && $user->hasRole('tech lead')) {
             $assign = true;
+        } else if ($nextPendingApproval == 'developer' && $user->hasRole('developer')) {
+            $markCompleted = true;
         }
 
-        return view('change_requests.show', compact('changeRequest', 'userType', 'userCanApprove', 'assign'));
+        return view('change_requests.show', compact('changeRequest', 'userType', 'userCanApprove', 'assign', 'markCompleted'));
 
     }
 
@@ -265,6 +268,22 @@ class ChangeRequestController extends Controller
 
                 break;
         }
+
+        return redirect()->route('change_requests.show', $changeRequest->id)
+            ->with('success', 'Change request updated successfully.');
+    }
+
+    public function complete(Request $request, $id)
+    {
+        $changeRequest = ChangeRequest::findOrFail($id);
+        // Check if the user is authorized to approve /decline (you can add additional checks here)
+
+
+        if (Auth::user()->hasRole('developer')) {
+            $changeRequest->status_id = 4;
+            $changeRequest->update();
+        }
+
 
         return redirect()->route('change_requests.show', $changeRequest->id)
             ->with('success', 'Change request updated successfully.');
