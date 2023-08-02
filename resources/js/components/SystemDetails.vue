@@ -4,7 +4,7 @@
         <p>Name: {{ system.name }}</p>
         <p>Description: {{ system.description }}</p>
 
-        <a class="btn btn-primary-outline" :href="`/systems/edit/${system.id}`">
+        <a class="btn btn-primary-outline" :href="`/systems/${system.id}/edit`">
             <font-awesome-icon :icon="['far', 'pen-to-square']" style="color: #3671d9;" />
         </a>
 
@@ -36,7 +36,7 @@ export default {
             try {
                 await axios.post(`/systems/${systemId}`, { _method: 'delete' });
                 alert('System successfully deleted!');
-                window.location.assign('/dashboard');
+                window.location.assign('/systems');
             } catch (error) {
                 console.error('Error deleting system:', error);
                 alert('An error occurred while deleting the system.');

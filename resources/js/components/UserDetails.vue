@@ -5,7 +5,7 @@
         <p>Email: {{ user.email }}</p>
         <p>Role: <span v-for="role in user.roles" :key="role.id">{{ role.name }}</span></p>
 
-        <a class="btn btn-primary-outline" :href="`/admin/users/edit/${user.id}`">
+        <a class="btn btn-primary-outline" :href="`/users/${user.id}/edit`">
             <font-awesome-icon :icon="['far', 'pen-to-square']" style="color: #3671d9;" />
         </a>
 
@@ -35,7 +35,7 @@ export default {
         },
         async deleteUser(userId) {
             try {
-                await axios.post(`/admin/users/${userId}`, { _method: 'delete' });
+                await axios.post(`/users/${userId}`, { _method: 'delete' });
                 alert('User successfully deleted!');
                 window.location.assign('/dashboard');
             } catch (error) {

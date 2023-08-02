@@ -85,14 +85,14 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
-                        <div class="form-group">
+                        <div class="form-group" style="margin-top: 20px;">
                             <textarea name="reason" id="reason" class="form-control" rows="2" ></textarea>
                         </div>
-                        <div class="row approval">
+                        <div class="row approval" style="margin-top: 20px;">
                             <div class="col-md-6 text-center">
                                 <button type="submit" name="action" value="decline" class="btn btn-outline-danger">Decline</button>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 text-center">
                                 <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
                             </div>
                         </div>

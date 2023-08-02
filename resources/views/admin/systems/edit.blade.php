@@ -2,7 +2,7 @@
 
     {{--        @if(Auth::user()->permissions()->contains('edit_user'))--}}
     <div class="container dashboard">
-        <h2>Edit System</h2>
+        <h1>Edit System</h1>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

@@ -12,6 +12,7 @@ use App\Models\Status;
 use App\Models\System;
 use App\Models\User;
 use App\Notifications\ChangeRequestApprovedNotification;
+use App\Notifications\ChangeRequestAssignedNotification;
 use App\Notifications\ChangeRequestRejectedNotification;
 use App\Notifications\NewCommentNotification;
 use Illuminate\Http\Request;
@@ -20,30 +21,33 @@ use Illuminate\Support\Facades\Notification;
 
 class ChangeRequestController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
+        $search_input = $request->query('search_input');
+        $search_status_id = $request->query('search_status_id');
 
-        $business_analysts = User::whereHas('roles',
-            function ($query) {
-                $query->where('name', 'business analyst');
-            })->get();
-        $designs = User::whereHas('roles',
-            function ($query) {
-                $query->where('name', 'design');
-            })->get();
-        $tech_leads = User::whereHas('roles',
-            function ($query) {
-                $query->where('name', 'tech lead');
-            })->get();
+//        $changeRequests = ChangeRequest::where('title', 'like', '%' . $search_input . '%')
+//            ->where('status_id', $search_status_id)
+//            ->orderBy('id','DESC')
+//            ->get();
 
-        $approvers = $business_analysts->merge($designs)->merge($tech_leads);
+        $changeRequestQuery = ChangeRequest::query();
 
-//        dd($approvers);
-//        $changeRequests = ChangeRequest::with('user', 'system', 'status', 'priority')->get();
-        $changeRequests = ChangeRequest::orderBy('id','DESC')->get();
+        if($search_input) {
+            $changeRequestQuery = $changeRequestQuery->where('title', 'like', '%' . $search_input . '%');
+        }
+
+        if($search_status_id) {
+            $changeRequestQuery = $changeRequestQuery->where('status_id', $search_status_id);
+        }
+
+        $changeRequests = $changeRequestQuery->orderBy('id','DESC')->get();
+
         $changeRequests->load('user', 'system', 'status', 'priority');
-        return view('change_requests.index', compact('changeRequests'));
+        $statuses = Status::all();
+
+        return view('change_requests.index', compact('changeRequests', 'statuses'));
     }
 
     public function show(ChangeRequest $changeRequest)
@@ -97,7 +101,7 @@ class ChangeRequestController extends Controller
             'current_process' => 'required',
             'proposed_process' => 'required',
             // 'user_id' => 'required',
-             'priority_id' => 'required|exists:priorities,id',
+            'priority_id' => 'required|exists:priorities,id',
         ]);
 
         $validatedData['user_id'] = Auth::id();
@@ -196,10 +200,29 @@ class ChangeRequestController extends Controller
                 }
 
                 $changeRequest->user->notify(new ChangeRequestApprovedNotification($changeRequest));
+
+                $business_analysts = User::whereHas('roles',
+                    function ($query) {
+                        $query->where('name', 'business_analyst')
+                            ->orWhere('name', 'business analyst');
+                    })->get();
+                $designs = User::whereHas('roles',
+                    function ($query) {
+                        $query->where('name', 'design');
+                    })->get();
+                $tech_leads = User::whereHas('roles',
+                    function ($query) {
+                        $query->where('name', 'tech_lead')
+                            ->orWhere('name', 'tech lead');
+                    })->get();
+
+                $approvers = $business_analysts->merge($designs)->merge($tech_leads);
+
+                Notification::send($approvers, new ChangeRequestApprovedNotification($changeRequest));
+
                 break;
 
             case 'decline':
-                // Check if the user is authorized to reject (you can add additional checks here)
 
                 $validatedData = $request->validate([
                     'reason' => 'required',
@@ -215,6 +238,26 @@ class ChangeRequestController extends Controller
                 $approval->save();
 
                 $changeRequest->user->notify(new ChangeRequestRejectedNotification($changeRequest));
+
+                $business_analysts = User::whereHas('roles',
+                    function ($query) {
+                        $query->where('name', 'business_analyst')
+                            ->orWhere('name', 'business analyst');
+                    })->get();
+                $designs = User::whereHas('roles',
+                    function ($query) {
+                        $query->where('name', 'design');
+                    })->get();
+                $tech_leads = User::whereHas('roles',
+                    function ($query) {
+                        $query->where('name', 'tech_lead')
+                            ->orWhere('name', 'tech lead');
+                    })->get();
+
+                $approvers = $business_analysts->merge($designs)->merge($tech_leads);
+
+                Notification::send($approvers, new ChangeRequestRejectedNotification($changeRequest));
+
                 break;
         }
 
@@ -263,10 +306,6 @@ class ChangeRequestController extends Controller
             ->with('success', 'Comment added successfully.');
     }
 
-    // ChangeRequestController.php
-
-// ... other controller code ...
-
     public function showAssignForm($id)
     {
         $changeRequest = ChangeRequest::findOrFail($id);
@@ -306,101 +345,103 @@ class ChangeRequestController extends Controller
 
         $changeRequest->update();
 
+        $developer->notify(new ChangeRequestAssignedNotification($changeRequest));
+
         return redirect()->route('change_requests.show', $changeRequest->id)
             ->with('success', 'Change request assigned to developer successfully.');
     }
 
-    public function approverDashboard()
-    {
-        // Retrieve pending change requests for the current approver
-        $pendingChangeRequests = ChangeRequest::with(['approvals.approvalLevel'])
-            ->whereHas('approvals', function ($query) {
-                $query->where('user_id', auth()->user()->id)
-                    ->where('status', 'pending');
-            })
-            ->get();
-
-        return view('change_requests.approver_dashboard', compact('pendingChangeRequests'));
-    }
-
-    public function viewApproverApproval(Request $request, $id)
-    {
-        $changeRequest = ChangeRequest::findOrFail($id);
-
-        // Check if the user is authorized to view the approval (you can add additional checks here)
-
-        return view('change_requests.approver_approval', compact('changeRequest'));
-    }
-
-    public function approveBusinessAnalyst(Request $request, $id)
-    {
-        $changeRequest = ChangeRequest::findOrFail($id);
-
-        $changeRequest->update(['status_id' => 2]);
-
-        $changeRequest->user->notify(new ChangeRequestApprovedNotification($changeRequest));
-
-        return redirect()->route('change_requests.approver.dashboard')
-            ->with('success', 'Change request approved successfully.');
-    }
-    public function rejectBusinessAnalyst(Request $request, $id)
-    {
-        $changeRequest = ChangeRequest::findOrFail($id);
-
-        $changeRequest->update(['status_id' => 5]);
-
-        $changeRequest->user->notify(new ChangeRequestRejectedNotification($changeRequest));
-
-        return redirect()->route('change_requests.approver.dashboard')
-            ->with('success', 'Change request rejected successfully.');
-    }
-
-    public function approveDesign(Request $request, $id)
-    {
-        $changeRequest = ChangeRequest::findOrFail($id);
-
-        $changeRequest->update(['status_id' => 3]);
-
-        $changeRequest->user->notify(new ChangeRequestApprovedNotification($changeRequest));
-
-        return redirect()->route('change_requests.approver.dashboard')
-            ->with('success', 'Change request approved successfully.');
-    }
-
-    public function rejectDesign(Request $request, $id)
-    {
-        $changeRequest = ChangeRequest::findOrFail($id);
-
-        $changeRequest->update(['status_id' => 5]);
-
-        $changeRequest->user->notify(new ChangeRequestRejectedNotification($changeRequest));
-
-        return redirect()->route('change_requests.approver.dashboard')
-            ->with('success', 'Change request rejected successfully.');
-    }
-
-    public function approveTechLead(Request $request, $id)
-    {
-        $changeRequest = ChangeRequest::findOrFail($id);
-
-        $changeRequest->update(['status_id' => 4]);
-
-        $changeRequest->user->notify(new ChangeRequestApprovedNotification($changeRequest));
-
-        return redirect()->route('change_requests.approver.dashboard')
-            ->with('success', 'Change request approved successfully.');
-    }
-
-    public function rejectTechLead(Request $request, $id)
-    {
-        $changeRequest = ChangeRequest::findOrFail($id);
-
-        $changeRequest->update(['status_id' => 5]);
-
-        $changeRequest->user->notify(new ChangeRequestRejectedNotification($changeRequest));
-
-        return redirect()->route('change_requests.approver.dashboard')
-            ->with('success', 'Change request rejected successfully.');
-    }
+//    public function approverDashboard()
+//    {
+//        // Retrieve pending change requests for the current approver
+//        $pendingChangeRequests = ChangeRequest::with(['approvals.approvalLevel'])
+//            ->whereHas('approvals', function ($query) {
+//                $query->where('user_id', auth()->user()->id)
+//                    ->where('status', 'pending');
+//            })
+//            ->get();
+//
+//        return view('change_requests.approver_dashboard', compact('pendingChangeRequests'));
+//    }
+//
+//    public function viewApproverApproval(Request $request, $id)
+//    {
+//        $changeRequest = ChangeRequest::findOrFail($id);
+//
+//        // Check if the user is authorized to view the approval (you can add additional checks here)
+//
+//        return view('change_requests.approver_approval', compact('changeRequest'));
+//    }
+//
+//    public function approveBusinessAnalyst(Request $request, $id)
+//    {
+//        $changeRequest = ChangeRequest::findOrFail($id);
+//
+//        $changeRequest->update(['status_id' => 2]);
+//
+//        $changeRequest->user->notify(new ChangeRequestApprovedNotification($changeRequest));
+//
+//        return redirect()->route('change_requests.approver.dashboard')
+//            ->with('success', 'Change request approved successfully.');
+//    }
+//    public function rejectBusinessAnalyst(Request $request, $id)
+//    {
+//        $changeRequest = ChangeRequest::findOrFail($id);
+//
+//        $changeRequest->update(['status_id' => 5]);
+//
+//        $changeRequest->user->notify(new ChangeRequestRejectedNotification($changeRequest));
+//
+//        return redirect()->route('change_requests.approver.dashboard')
+//            ->with('success', 'Change request rejected successfully.');
+//    }
+//
+//    public function approveDesign(Request $request, $id)
+//    {
+//        $changeRequest = ChangeRequest::findOrFail($id);
+//
+//        $changeRequest->update(['status_id' => 3]);
+//
+//        $changeRequest->user->notify(new ChangeRequestApprovedNotification($changeRequest));
+//
+//        return redirect()->route('change_requests.approver.dashboard')
+//            ->with('success', 'Change request approved successfully.');
+//    }
+//
+//    public function rejectDesign(Request $request, $id)
+//    {
+//        $changeRequest = ChangeRequest::findOrFail($id);
+//
+//        $changeRequest->update(['status_id' => 5]);
+//
+//        $changeRequest->user->notify(new ChangeRequestRejectedNotification($changeRequest));
+//
+//        return redirect()->route('change_requests.approver.dashboard')
+//            ->with('success', 'Change request rejected successfully.');
+//    }
+//
+//    public function approveTechLead(Request $request, $id)
+//    {
+//        $changeRequest = ChangeRequest::findOrFail($id);
+//
+//        $changeRequest->update(['status_id' => 4]);
+//
+//        $changeRequest->user->notify(new ChangeRequestApprovedNotification($changeRequest));
+//
+//        return redirect()->route('change_requests.approver.dashboard')
+//            ->with('success', 'Change request approved successfully.');
+//    }
+//
+//    public function rejectTechLead(Request $request, $id)
+//    {
+//        $changeRequest = ChangeRequest::findOrFail($id);
+//
+//        $changeRequest->update(['status_id' => 5]);
+//
+//        $changeRequest->user->notify(new ChangeRequestRejectedNotification($changeRequest));
+//
+//        return redirect()->route('change_requests.approver.dashboard')
+//            ->with('success', 'Change request rejected successfully.');
+//    }
 
 }

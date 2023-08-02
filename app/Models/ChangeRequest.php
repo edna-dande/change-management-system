@@ -104,18 +104,18 @@ class ChangeRequest extends Model
 
     public function getNextPendingApprovalAttribute()
     {
-        $bsaApproval = $this->bsaApprovalStatus();
-        $designApproval = $this->designApprovalStatus();
-        $techLeadApproval = $this->techLeadApprovalStatus();
-        $assigned = $this->developer();
-//dd($this->id, $bsaApproval, $designApproval, $techLeadApproval);
-        if($assigned) {
+        $bsaApproval = $this->bsaApprovalStatus()->first();
+        $designApproval = $this->designApprovalStatus()->first();
+        $techLeadApproval = $this->techLeadApprovalStatus()->first();
+        $assigned = $this->developer;
+
+        if ($assigned) {
             return null;
-        } else if(!$techLeadApproval->isEmpty()) {
+        } else if ($techLeadApproval) {
             return 'assign';
-        } else if (!$designApproval->isEmpty()) {
+        } else if ($designApproval) {
             return 'tech_lead';
-        } else if (!$bsaApproval->isEmpty()) {
+        } else if ($bsaApproval) {
             return 'design';
         } else {
             return 'bsa';

@@ -3,7 +3,7 @@
         <h1>Role Details</h1>
         <p>Name: {{ role.name }}</p>
 
-        <a class="btn btn-primary-outline" :href="`/roles/edit/${role.id}`">
+        <a class="btn btn-primary-outline" :href="`/roles/${role.id}/edit`">
             <font-awesome-icon :icon="['far', 'pen-to-square']" style="color: #3671d9;" />
         </a>
 
@@ -35,7 +35,7 @@ export default {
             try {
                 await axios.post(`/roles/${roleId}`, { _method: 'delete' });
                 alert('Role successfully deleted!');
-                window.location.assign('/dashboard');
+                window.location.assign('/roles');
             } catch (error) {
                 console.error('Error deleting role:', error);
                 alert('An error occurred while deleting the role.');

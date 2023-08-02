@@ -10,7 +10,29 @@
              <span class="create-text"> Create </span>
          </a>
 
-
+         <form method="GET" action="{{ route('change_requests') }}" >
+             <div class="row ">
+                 <div class="col-md-3">
+                    <input type="text" name="search_input" class="form-control" placeholder="Search..." value="{{ request()->query('search_input') }}">
+                 </div>
+                 <div class="col-md-3">
+                     <select name="search_status_id" id="status_id" class="form-control" >
+                         <option value="">Select a status</option>
+                         @foreach ($statuses as $status)
+                             <option value="{{ $status->id }}" {{ request()->query('search_status_id') == $status->id ? 'selected' : null }}>{{ $status->name }}</option>
+                         @endforeach
+                     </select>
+                 </div>
+                 <div class="col-md-3">
+                     <button class="btn btn-primary" type="submit">
+                    Search
+                    </button>
+                 </div>
+             </div>
+         </form>
+         <div class="col-md-3">
+         <a href="{{ route('change_requests') }}" class="btn btn-primary">View All</a>
+         </div>
 
          <table class="table">
              <thead>
@@ -46,7 +68,7 @@
                          </a>
                          @if(auth()->user()->id == $changeRequest->user_id)
                          <a href="{{ route('change_requests.edit', $changeRequest->id) }}" class="btn">
-                             <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                             <font-awesome-icon icon="fa-solid fa-pen-to-square" style="color: #3671d9;" />
                          </a>
                          <form action="{{ route('change_requests.destroy', $changeRequest->id) }}" method="POST" style="display: inline">
                              @csrf
