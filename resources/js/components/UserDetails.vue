@@ -9,7 +9,7 @@
             <font-awesome-icon :icon="['far', 'pen-to-square']" style="color: #3671d9;" />
         </a>
 
-        <form @submit.prevent="confirmDelete(user.id)">
+        <form v-if="user.id !== authid" @submit.prevent="confirmDelete(user.id)">
             <button type="submit" class="btn btn-danger-outline">
                 <font-awesome-icon icon="fa-solid fa-trash" style="color: #c4290e;" />
             </button>
@@ -26,6 +26,9 @@ export default {
             type: Object,
             required: true,
         },
+        authid: {
+            required: true,
+        }
     },
     methods: {
         confirmDelete(userId) {

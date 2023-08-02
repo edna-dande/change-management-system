@@ -36,7 +36,7 @@
                         <a class="btn" :href="`/users/${user.id}/edit`">
                             <font-awesome-icon :icon="['far', 'pen-to-square']" style="color: #3671d9;" />
                         </a>
-                        <form @submit.prevent="confirmDelete(user.id)" style="display: inline-block;">
+                        <form v-if="user.id !== authid" @submit.prevent="confirmDelete(user.id)" style="display: inline-block;">
                             <button class="btn" type="submit"><font-awesome-icon icon="fa-solid fa-trash" style="color: #c4290e;" /></button>
                         </form>
                     </td>
@@ -55,6 +55,9 @@ export default {
             type: Array,
             required: true,
         },
+        authid: {
+            required: true,
+        }
     },
     data() {
         return {
